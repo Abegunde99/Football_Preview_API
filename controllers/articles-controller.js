@@ -14,14 +14,14 @@ const postArticle = async (req, res, next) => {
     //post articles and also upload image to cloudinary and add fixtureid to article
     try {
         const article = req.body;
-
+        console.log(req.file)
         //check if file is uploaded
-        if (!req.files) {
+        if (!req.file) {
             return res.status(400).json({ success: false, message: 'No file uploaded' });
         }
 
-        const { file } = req.files;
-        const upload = await cloudinary.v2.uploader.upload(file.tempFilePath, { folder: 'upload' });
+        const file = req.file;
+        const upload = await cloudinary.v2.uploader.upload(file.path, { folder: 'upload' });
         article.image = upload.secure_url;
         article.fixture = req.params.id;
         const newArticle = await articlesService.postArticle(article);
