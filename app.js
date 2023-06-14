@@ -1,5 +1,5 @@
 const express = require('express');
-require('dotenv').config({ path: './config/.env' });
+require('dotenv').config();
 const standingsRouter = require('./routes/standings');
 const fixturesRouter = require('./routes/fixtures');
 

@@ -119,5 +119,6 @@ for the project
 |   ├── error.js
 |-- config
 |   ├── connection.js
-|   ├── sample.env
+|   
 |── server.js
+├── sample.env

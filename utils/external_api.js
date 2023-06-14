@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 //load env vars
-require('dotenv').config({ path: './config/.env' });
+require('dotenv').config();
 
 
 const year = new Date().getFullYear();
