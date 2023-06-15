@@ -32,6 +32,9 @@ function extractNumberFromString(str) {
     } else {
       return null; // or handle the case when no number is found
     }
-  }
+}
+
+
+
 
 module.exports = { updateStandingsAndFixtures };

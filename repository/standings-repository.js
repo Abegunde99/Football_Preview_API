@@ -16,7 +16,7 @@ const standingsRepository = {
     //find standings by groups/league
     getStandingsByLeague: async (group) =>{ 
         try {
-            const standings = await StandingsModel.find({ group: new RegExp(group, 'i') });
+            const standings = await StandingsModel.find({ 'group': new RegExp(group, 'i') });
             return standings;
         }catch(error) {
         throw new ErrorResponse(error.message, 500);

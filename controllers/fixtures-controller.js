@@ -19,11 +19,11 @@ const getFixturesByLeague = asyncHandler(async (req, res, next) => {
 
 // @desc      Get fixtures by league and gameweek
 // @route     GET /fixtures/:league/:gameweek
-const getFixturesByLeagueAndGameweek = asyncHandler(async (req, res, next) => { 
-    const fixtures = await fixturesService.getFixturesByLeagueAndGameweek(req.params.league, req.params.gameweek);
+const getFixturesByGameWeek = asyncHandler(async (req, res, next) => { 
+    const fixtures = await fixturesService.getFixturesByGameWeek(req.params.league, req.params.gameweek);
     res.status(200).json({ success: true, fixtures });
 });
    
 
 
-module.exports = { getFixtures, getFixturesByLeague, getFixturesByLeagueAndGameweek };
+module.exports = { getFixtures, getFixturesByLeague, getFixturesByGameWeek };

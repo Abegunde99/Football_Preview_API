@@ -1,17 +1,14 @@
 const app = require('./app');
-const { updateStandingsAndFixtures } = require('./utils/cron');
+const { updateStandingsAndFixtures} = require('./utils/cron');
 
 const cron = require('node-cron');
 
-// const cronSchedule = '0 */5 * * *';
-//call every minute
-// const cronSchedule = '* * * * *';
+const cronSchedule = '0 */5 * * *';
 
 
-// const cronJob = () => {
-//     console.log('Updating standings and fixtures...');
-//     updateStandingsAndFixtures();
-// };
+const cronJob = () => {
+    updateStandingsAndFixtures();
+};
 
 //connect to database
 const { connectDB } = require('./config/connection');
@@ -19,7 +16,7 @@ connectDB();
 
 
 // Set up the cron job
-// cron.schedule(cronSchedule, cronJob);
+cron.schedule(cronSchedule, cronJob);
 
 
 const PORT = process.env.PORT || 5001;
