@@ -1,24 +1,20 @@
-const  {standingsService}  = require('../services/standings-service');
-   
-const getStandings = async (req, res, next) => {
-    try {
-        const standings = await standingsService.getStandings();
-        res.status(200).json({success: true, standings});
-    } catch (error) {
-        next(error);
-    }
-}
+const { standingsService } = require('../services/standings-service');
+const asyncHandler = require('../middlewares/async');
+
+// @desc      Get all standings
+// @route     GET /standings 
+const getStandings = asyncHandler(async (req, res, next) => {
+    const standings = await standingsService.getStandings();
+    res.status(200).json({success: true, standings});
+})
 
 
-
-const getStandingsByLeague = async (req, res, next) =>{
-    try {
-        const standings = await standingsService.getStandingsByLeague(req.params.league);
-        res.status(200).json({success: true, standings});
-    } catch (error) {
-        next(error);
-    }
-}
+// @desc      Get standings by league
+// @route     GET /standings/:league
+const getStandingsByLeague = asyncHandler(async (req, res, next) => { 
+    const standings = await standingsService.getStandingsByLeague(req.params.league);
+    res.status(200).json({ success: true, standings });
+});
 
 
 module.exports = {getStandings, getStandingsByLeague};

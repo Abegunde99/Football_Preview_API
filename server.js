@@ -7,7 +7,6 @@ const cronSchedule = '0 */5 * * *';
 
 
 const cronJob = () => {
-    console.log('Updating standings and fixtures')
     updateStandingsAndFixtures();
 };
 
