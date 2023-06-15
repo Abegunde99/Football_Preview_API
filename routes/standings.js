@@ -4,6 +4,6 @@ const {getStandings, getStandingsByLeague}  = require('../controllers/standings-
 
 
 router.get('/', getStandings);
-router.get('/:league', getStandingsByLeague);
+router.get('/:group', getStandingsByLeague);
 
 module.exports = router;

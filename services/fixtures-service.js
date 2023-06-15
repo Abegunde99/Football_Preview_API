@@ -21,6 +21,15 @@ class fixturesService {
             throw new ErrorResponse(error.message, 500);
         }
     }
+
+    static async getFixturesByGameWeek(league, gameWeek) { 
+        try {
+            const fixtures = await fixturesRepository.getFixturesByGameWeek(league, gameWeek);
+            return fixtures;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    }
 }
 
 module.exports = {fixturesService};

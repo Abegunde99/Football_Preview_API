@@ -13,15 +13,16 @@ const standingsRepository = {
         }
     },
 
-    
-    getStandingsByLeague: async (league) =>{ 
+    //find standings by groups/league
+    getStandingsByLeague: async (group) =>{ 
         try {
-            const standings = await StandingsModel.find({ league: league });
+            const standings = await StandingsModel.find({ group: new RegExp(group, 'i') });
             return standings;
-        } catch (error) {
-            throw new ErrorResponse(error.message, 500);
+        }catch(error) {
+        throw new ErrorResponse(error.message, 500);
         }
     }
+    
 };  
 
 module.exports = {standingsRepository};

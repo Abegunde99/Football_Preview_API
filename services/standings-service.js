@@ -12,9 +12,9 @@ class standingsService {
         }
     }
 
-    static async getStandingsByLeague(league) {
+    static async getStandingsByLeague(group) {
         try {
-            const standings = await standingsRepository.getStandingsByLeague(league);
+            const standings = await standingsRepository.getStandingsByLeague(group);
             return standings;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);

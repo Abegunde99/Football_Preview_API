@@ -43,7 +43,7 @@ const fixtureSchema = new mongoose.Schema({
             type: Number
         },
         round: {
-            type: String
+            type: String       
         }
     },
     teams: {
@@ -101,14 +101,20 @@ const fixtureSchema = new mongoose.Schema({
                 type: Number || null
             }
         }
+    },
+    gameWeek: {
+        type: Number
     }
 }, { timestamps: true });
 
 //convert time to local time before saving to db
-fixtureSchema.pre('save', function (next) {
-    const date = new Date(this.fixture.date);
-    this.fixture.date = date.toLocaleString();
-    next();
-});
+// fixtureSchema.pre('save', async function (next) {
+//     const date = new Date(this.fixture.date);
+//     this.fixture.date = date.toLocaleString();
+//     next();
+// });
+
+
+
 
 module.exports = mongoose.model('Fixture', fixtureSchema);

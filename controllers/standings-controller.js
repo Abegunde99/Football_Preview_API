@@ -10,9 +10,9 @@ const getStandings = asyncHandler(async (req, res, next) => {
 
 
 // @desc      Get standings by league
-// @route     GET /standings/:league
+// @route     GET /standings/:group
 const getStandingsByLeague = asyncHandler(async (req, res, next) => { 
-    const standings = await standingsService.getStandingsByLeague(req.params.league);
+    const standings = await standingsService.getStandingsByLeague(req.params.group);
     res.status(200).json({ success: true, standings });
 });
 

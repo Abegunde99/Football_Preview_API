@@ -9,6 +9,12 @@ const updateStandingsAndFixtures = async () => {
         const fixtures = await fetchFixtures();
         await StandingsModel.deleteMany({});
         await FixturesModel.deleteMany({});
+
+        //add game week to fixtures
+        fixtures.forEach(fixture => {
+            fixture.gameWeek = extractNumberFromString(fixture.league.round);
+        });
+        console.log(fixtures[0])
         await StandingsModel.insertMany(standings);
         await FixturesModel.insertMany(fixtures);
         return { standings, fixtures };
@@ -16,5 +22,16 @@ const updateStandingsAndFixtures = async () => {
         throw new ErrorResponse(error.message, 500);
     }
 }
+
+function extractNumberFromString(str) {
+    const regex = /(\d+)$/;
+    const match = str.match(regex);
+    
+    if (match && match[1]) {
+      return parseInt(match[1]);
+    } else {
+      return null; // or handle the case when no number is found
+    }
+  }
 
 module.exports = { updateStandingsAndFixtures };
