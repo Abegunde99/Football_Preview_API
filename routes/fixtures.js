@@ -4,6 +4,6 @@ const { getFixtures, getFixturesByLeague, getFixturesByGameWeek} = require('../c
 
 router.get('/', getFixtures);
 router.get('/:league', getFixturesByLeague);
-router.get('/round/:league/:gameweek', getFixturesByGameWeek);
+router.get('/:league/:gameweek', getFixturesByGameWeek);
 
 module.exports = router;

@@ -21,19 +21,20 @@ const getFixturesByLeague = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Get fixtures by league and gameweek
-// @route     GET /fixtures/round/:league/:gameweek
+// @route     GET /fixtures/:league/:gameweek
 const getFixturesByGameWeek = asyncHandler(async (req, res, next) => { 
     let gameWeek;
-    if (req.params.gameweek) { 
-        gameWeek = req.params.gameweek;
-    } else {
+    if (req.params.gameweek === 'current') {
         const currentRound = await RoundsModel.findOne({ 'league': new RegExp(req.params.league, 'i') });
         gameWeek = extractNumberFromString(currentRound.currentRound);
+    } else {
+        gameWeek = req.params.gameweek;
     }
     const fixtures = await fixturesService.getFixturesByGameWeek(req.params.league, gameWeek);
     res.status(200).json({ success: true, fixtures });
 });
    
+
 
 
 
