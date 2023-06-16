@@ -1,5 +1,5 @@
-const { fetchFixtures, fetchStandings } = require('./external_api');
-const { StandingsModel, FixturesModel } = require('../models');
+const { fetchFixtures, fetchStandings, fetchCurrentRounds } = require('./external_api');
+const { StandingsModel, FixturesModel, RoundsModel } = require('../models');
 const { ErrorResponse } = require('./errorResponse');
 
 //function to update standings and fixtures in the database
@@ -34,7 +34,16 @@ function extractNumberFromString(str) {
     }
 }
 
+const updateCurrentRounds = async () => { 
+    try {
+        const currentRounds = await fetchCurrentRounds();
+        await RoundsModel.deleteMany({});
+        await RoundsModel.insertMany(currentRounds);
+        return currentRounds;
+    } catch (error) {
+        throw new ErrorResponse(error.message, 500);
+    }
+}
 
 
-
-module.exports = { updateStandingsAndFixtures };
+module.exports = { updateStandingsAndFixtures , updateCurrentRounds, extractNumberFromString};

@@ -29,6 +29,15 @@ const fixturesRepository = {
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
+    },
+
+    getFixturesByCurrentRound: async (league, currentRound) => { 
+        try {
+            const fixtures = await FixturesModel.find({ 'league.name': new RegExp(league, 'i'), 'gameWeek': currentRound });
+            return fixtures;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
     }
 };
 

@@ -30,6 +30,15 @@ class fixturesService {
             throw new ErrorResponse(error.message, 500);
         }
     }
+
+    static async getFixturesByCurrentRound(league, currentRound) { 
+        try {
+            const fixtures = await fixturesRepository.getFixturesByCurrentRound(league, currentRound);
+            return fixtures;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    }
 }
 
 module.exports = {fixturesService};
