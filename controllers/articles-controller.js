@@ -6,6 +6,10 @@ const cloudinary = require('../utils/cloudinary');
 // @route     GET /articles
 const getArticles = asyncHandler(async (req, res, next) => { 
     const articles = await articlesService.getArticles();
+
+    if (articles.length === 0) { 
+        return res.status(404).json({ success: false, message: 'No articles found' });
+    }
     res.status(200).json({ success: true, articles });
 });
 
@@ -47,6 +51,13 @@ const getArticleById = asyncHandler(async (req, res, next) => {
 // @route     PUT /articles/:id
 const updateArticle = asyncHandler(async (req, res, next) => { 
     const article = req.body;
+
+    //check if article exists
+    const articleExists = await articlesService.getArticleById(req.params.id);
+    if (articleExists === null) {
+        return res.status(400).json({ success: false, message: 'Invalid article id' });
+    }
+
     const newArticle = await articlesService.updateArticle(req.params.id, article);
     res.status(200).json({ success: true, newArticle }); 
 });
@@ -55,6 +66,12 @@ const updateArticle = asyncHandler(async (req, res, next) => {
 // @desc      Delete article
 // @route     DELETE /articles/:id
 const deleteArticle = asyncHandler(async (req, res, next) => { 
+    //check if article exists
+    const articleExists = await articlesService.getArticleById(req.params.id);
+    if (articleExists === null) {
+        return res.status(400).json({ success: false, message: 'Invalid article id' });
+    }
+
     const article = await articlesService.deleteArticle(req.params.id);
     res.status(200).json({ success: true, message: "article deleted successfully" }); 
 });
@@ -64,6 +81,10 @@ const deleteArticle = asyncHandler(async (req, res, next) => {
 // @route     GET /articles/tag/:tag
 const getArticlesByTag = asyncHandler(async (req, res, next) => {
     const articles = await articlesService.getArticlesByTag(req.params.tag);
+
+    if (articles.length === 0) { 
+        return res.status(404).json({ success: false, message: 'No article found' });
+    }
     res.status(200).json({ success: true, articles }); 
 });
 
@@ -72,6 +93,10 @@ const getArticlesByTag = asyncHandler(async (req, res, next) => {
 // @route     GET /articles/author/:author
 const getArticlesByAuthor = asyncHandler(async (req, res, next) => { 
     const articles = await articlesService.getArticlesByAuthor(req.params.author);
+
+    if (articles.length === 0) {
+        return res.status(404).json({ success: false, message: 'No article found' });
+    }
     res.status(200).json({ success: true, articles });
 });
 
@@ -80,6 +105,10 @@ const getArticlesByAuthor = asyncHandler(async (req, res, next) => {
 // @route     GET /articles/fixture/:fixtureId
 const getArticlesByFixture = asyncHandler(async (req, res, next) => { 
     const articles = await articlesService.getArticlesByFixture(req.params.fixtureId);
+
+    if (articles.length === 0) { 
+        return res.status(404).json({ success: false, message: 'No article found' });
+    }
     res.status(200).json({ success: true, articles });
 });
 

@@ -72,13 +72,14 @@ const articlesRepository = {
     },
     getArticlesByFixture: async (fixturesId) => { 
         try {
+            console.log(fixturesId)
             //check if fixturesId is valid
             const fixture = await FixturesModel.findById(fixturesId);
             if (!fixture) {
                 throw new ErrorResponse('Invalid fixture id', 400);
             }
 
-            const articles = await ArticlesModel.find({ fixtures: fixturesId });
+            const articles = await ArticlesModel.find({ fixture: fixturesId });
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
