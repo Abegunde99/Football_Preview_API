@@ -34,7 +34,7 @@ const articlesRepository = {
                  throw new ErrorResponse('Invalid article id', 400);
             }
             
-            const newArticle = await ArticleModel.findByIdAndUpdate(id, article, { new: true });
+            const newArticle = await ArticlesModel.findByIdAndUpdate(id, article, { new: true });
             return newArticle;
         }catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -48,7 +48,7 @@ const articlesRepository = {
                 throw new ErrorResponse('Invalid article id', 400);
             }
 
-            const article = await ArticleModel.findByIdAndDelete(id);
+            const article = await ArticlesModel.findByIdAndDelete(id);
             return article;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);

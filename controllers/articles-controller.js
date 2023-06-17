@@ -15,7 +15,7 @@ const getArticles = asyncHandler(async (req, res, next) => {
 const postArticle = asyncHandler(async (req, res, next) => {
     //post articles and also upload image to cloudinary and add fixtureid to article  
     const article = req.body;
-    console.log(req.file)
+
     //check if file is uploaded
     if (!req.file) {
         return res.status(400).json({ success: false, message: 'No file uploaded' });
@@ -23,8 +23,9 @@ const postArticle = asyncHandler(async (req, res, next) => {
 
     const file = req.file;
     const upload = await cloudinary.v2.uploader.upload(file.path, { folder: 'upload' });
+
     article.image = upload.secure_url;
-    article.fixture = req.params.id;
+    article.fixture = req.params.fixtureId;
     const newArticle = await articlesService.postArticle(article);
     res.status(200).json({ success: true, newArticle });
 });
@@ -34,6 +35,10 @@ const postArticle = asyncHandler(async (req, res, next) => {
 // @route     GET /articles/:id
 const getArticleById = asyncHandler(async (req, res, next) => {
     const article = await articlesService.getArticleById(req.params.id);
+
+    if (article === null) { 
+        return res.status(404).json({ success: false, message: 'Article not found' });
+    }
     res.status(200).json({ success: true, article }); 
 })
 
@@ -51,7 +56,7 @@ const updateArticle = asyncHandler(async (req, res, next) => {
 // @route     DELETE /articles/:id
 const deleteArticle = asyncHandler(async (req, res, next) => { 
     const article = await articlesService.deleteArticle(req.params.id);
-    res.status(200).json({ success: true, article }); 
+    res.status(200).json({ success: true, message: "article deleted successfully" }); 
 });
 
 

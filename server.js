@@ -1,5 +1,5 @@
 const app = require('./app');
-const { updateStandingsAndFixtures} = require('./utils/cron');
+const { updateStandingsAndFixtures, updateCurrentRounds} = require('./utils/cron');
 
 const cron = require('node-cron');
 
@@ -17,6 +17,12 @@ connectDB();
 
 // Set up the cron job
 cron.schedule(cronSchedule, cronJob);
+
+// Schedule the cron job to run the function once every day at a specific time
+cron.schedule('0 0 * * *', () => {
+    updateCurrentRounds();
+});
+
 
 
 const PORT = process.env.PORT || 5001;
