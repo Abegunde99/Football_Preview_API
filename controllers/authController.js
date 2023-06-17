@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const ErrorResponse = require('../utils/errorResponse');
+const {ErrorResponse} = require('../utils/errorResponse');
 const asyncHandler = require('../middlewares/async');
 const sendEmail = require('../utils/sendEmail');
 const { UserModel } = require('../models');
@@ -79,13 +79,18 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @desc      Update password
 // @route     PUT /auth/updatepassword
 exports.updatePassword = asyncHandler(async (req, res, next) => {
-  const user = await UserModel.findById(req.user.id).select('+password');
+  const user = await UserModel.findById(req.user._id).select('+password');
 
   // Check current password
   if (!(await user.matchPassword(req.body.currentPassword))) {
     return next(new ErrorResponse('Password is incorrect', 401));
   }
 
+  //check if new password is same as old password
+  if (req.body.currentPassword === req.body.newPassword) {
+    return next(new ErrorResponse('New password cannot be same as old password', 401));
+  }
+  
   user.password = req.body.newPassword;
   await user.save();
 
