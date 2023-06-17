@@ -3,7 +3,7 @@ const { updateStandingsAndFixtures, updateCurrentRounds} = require('./utils/cron
 
 const cron = require('node-cron');
 
-const cronSchedule = '0 */5 * * *';
+const cronSchedule = '0 */3 * * *';
 
 
 const cronJob = () => {
@@ -15,10 +15,10 @@ const { connectDB } = require('./config/connection');
 connectDB();
 
 
-// Set up the cron job
+// Set up the cron job to run the updateStandingsAndFixtures function every 3 hours
 cron.schedule(cronSchedule, cronJob);
 
-// Schedule the cron job to run the function once every day at a specific time
+// Schedule the cron job to run the updateCurrentRound function once every day at a specific time
 cron.schedule('0 0 * * *', () => {
     updateCurrentRounds();
 });
