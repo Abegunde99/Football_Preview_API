@@ -14,7 +14,6 @@ const updateStandingsAndFixtures = async () => {
         fixtures.forEach(fixture => {
             fixture.gameWeek = extractNumberFromString(fixture.league.round);
         });
-        console.log(fixtures[0])
         await StandingsModel.insertMany(standings);
         await FixturesModel.insertMany(fixtures);
         return { standings, fixtures };

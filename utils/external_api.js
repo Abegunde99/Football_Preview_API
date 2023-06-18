@@ -60,26 +60,26 @@ async function fetchFixtures() {
     return fixtures;
 }
 
-const leagueIdForV2 = [4335,4365, 4368,4369]
+// const leagueIdForV2 = [4335,4365, 4368,4369]
 
 //get current round of fixtures
-async function fetchCurrentRound(id) { 
-    const options = {
-        method: 'GET',
-        url: `https://api-football-v1.p.rapidapi.com/v2/fixtures/rounds/${id}/current`,
-        headers: {
-          'X-RapidAPI-Key': process.env.API_KEY,
-          'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
-        }
-      };
+// async function fetchCurrentRound(id) { 
+//     const options = {
+//         method: 'GET',
+//         url: `https://api-football-v1.p.rapidapi.com/v2/fixtures/rounds/${id}/current`,
+//         headers: {
+//           'X-RapidAPI-Key': process.env.API_KEY,
+//           'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
+//         }
+//       };
       
-      try {
-          const response = await axios.request(options);
-          return response.data.api.fixtures[0];
-      } catch (error) {
-          console.error(error);
-      }
-}
+//       try {
+//           const response = await axios.request(options);
+//           return response.data.api.fixtures[0];
+//       } catch (error) {
+//           console.error(error);
+//       }
+// }
 
 //get current round of fixtures
 async function fetchCurrentRoundForPL() { 
@@ -155,11 +155,6 @@ async function fetchCurrentRoundForL2() {
 async function fetchCurrentRounds() {
     let currentRound;
 
-    // let premierLeague = await fetchCurrentRound(leagueIdForV2[0]);
-    // let championship = await fetchCurrentRound(leagueIdForV2[1]);
-    // let leagueOne = await fetchCurrentRound(leagueIdForV2[2]);
-    // let leagueTwo = await fetchCurrentRound(leagueIdForV2[3]);
-    
     let premierLeague = await fetchCurrentRoundForPL();
     let championship = await fetchCurrentRoundForChamp();
     let leagueOne = await fetchCurrentRoundForL1();

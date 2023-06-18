@@ -67,6 +67,10 @@ exports.logout = asyncHandler(async (req, res, next) => {
 // @desc      Get current logged in user
 // @route     GET /auth/me
 exports.getMe = asyncHandler(async (req, res, next) => {
+  //check for req.user
+  if (!req.user) {
+    return next(new ErrorResponse('there is no logged In user', 404));
+  }
   const user = await UserModel.findById(req.user.id);
 
   res.status(200).json({
@@ -90,7 +94,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   if (req.body.currentPassword === req.body.newPassword) {
     return next(new ErrorResponse('New password cannot be same as old password', 401));
   }
-  
+
   user.password = req.body.newPassword;
   await user.save();
 
@@ -103,7 +107,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 // @route     POST /auth/forgotpassword
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await UserModel.findOne({ email: req.body.email });
-
+  console.log(user)
   if (!user) {
     return next(new ErrorResponse('There is no user with that email', 404));
   }
@@ -116,9 +120,10 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   // Create reset url
   const resetUrl = `${req.protocol}://${req.get(
     'host'
-  )}/api/v1/auth/resetpassword/${resetToken}`;
+  )}/auth/resetpassword/${resetToken}`;
 
-  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+
+  const message = `You are receiving this email because you (or someone else) has requested the reset of your password. Please make a PUT request to: \n\n ${resetUrl} `;
 
   try {
     await sendEmail({
@@ -127,7 +132,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
       message
     });
 
-    res.status(200).json({ success: true, data: 'Email sent' });
+    res.status(200).json({ success: true, data: 'Email sent', resetToken });
   } catch (err) {
     console.log(err);
     user.resetPasswordToken = undefined;
@@ -138,15 +143,21 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Email could not be sent', 500));
   }
 
-  res.status(200).json({
-    success: true,
-    data: user
-  });
 });
 
 // @desc      Reset password
 // @route     PUT auth/resetpassword/:resettoken
 exports.resetPassword = asyncHandler(async (req, res, next) => {
+  //check for password and confirm password
+  if (!req.body.password || !req.body.confirmPassword) {
+    return next(new ErrorResponse('Please provide password and confirm password', 400));
+  }
+
+  //check if password and confirm password are same
+  if (req.body.password !== req.body.confirmPassword) {
+    return next(new ErrorResponse('Password and confirm password do not match', 400));
+  }
+
   // Get hashed token
   const resetPasswordToken = crypto
     .createHash('sha256')
@@ -166,12 +177,121 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   user.password = req.body.password;
   user.resetPasswordToken = undefined;
   user.resetPasswordExpire = undefined;
-    await user.save();
+  
+  await user.save();
+    
+  //send email to user
+  const message = `Your password has been changed successfully`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Password reset successful',
+      message
+    });
+
+  } catch (err) {
+    console.log(err);
+    return next(new ErrorResponse('Email could not be sent', 500));
+  }
+
+  //generate token
+  const token = createToken(user._id);
+  sendTokenResponse(token, 200, res);
+});
+
+
+//@desc send otp to user email
+//@route POST /auth/sendotp
+//send otp to user email
+exports.sendOtp = asyncHandler(async (req, res, next) => {
+  const { email } = req.body;
+
+  // Validate email
+  if (!email) {
+    return next(new ErrorResponse('Please provide an email', 400));
+  }
+
+  // Check for user
+  const user = await UserModel.findOne({ email });
+
+  if (!user) {
+    return next(new ErrorResponse('Invalid credentials', 401));
+  }
+
+  //generate otp
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  
+  //send otp to user email
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Password reset token',
+      message: `Your otp is ${otp}`
+    });
+  } catch (err) {
+    return next(new ErrorResponse('Email could not be sent', 500));
+  }
+
+  //save otp to user
+  user.otp = otp;
+  user.otpExpire = Date.now() + 10 * 60 * 1000;
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    success: true,
+    data: user
+  });
+});
+
+//@desc verify otp
+//@route POST /auth/verifyotp
+//verify otp
+exports.verifyOtp = asyncHandler(async (req, res, next) => { 
+  try {
+    const { email, otp } = req.body;
+
+    // Validate email
+    if (!email) {
+      return next(new ErrorResponse('Please provide an email', 400));
+    }
+
+    // Validate otp
+    if (!otp) {
+      return next(new ErrorResponse('Please provide an otp', 400));
+    }
+
+    // Check for user
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      return next(new ErrorResponse('Invalid credentials', 401));
+    }
+
+    //check if otp is valid
+    if(user.otp !== parseInt(otp)) {
+      return next(new ErrorResponse('Invalid otp', 401));
+    }
+
+    //check if otp is expired
+    if (user.otpExpire < Date.now()) {
+      return next(new ErrorResponse('Otp expired', 401));
+    }
+
+    //remove otp and otpExpire from user
+    user.otp = undefined;
+    user.otpExpire = undefined;
+    await user.save({ validateBeforeSave: false });
     
     //generate token
     const token = createToken(user._id);
-  sendTokenResponse(token, 200, res);
+    sendTokenResponse(token, 200, res);
+  } catch (err) {
+    return next(new ErrorResponse('Something went wrong', 500));
+  }
 });
+
+
 
 // Get token from model, create cookie and send response
 const sendTokenResponse = (token, statusCode, res) => {
