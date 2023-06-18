@@ -2,6 +2,9 @@
 
 Football Preview  Api is an open source backend that can be deployed to any infrastructure that can run Node.js. Parse Server works with the Express web application framework.
 
+#DOCUMENTATION
+https://documenter.getpostman.com/view/21616732/2s93sgWW7A#32a74f02-5444-4665-bdb2-0bf206fb0afe
+
 # Table OF content
 
 - Description
@@ -18,8 +21,13 @@ Football Preview  Api is an open source backend that can be deployed to any infr
 
 It is use for the following
 
-- Generate Standings of the Premier League, Championship, League One and League Two from an external api
-- Generate Fixtures of the Premier League, Championship, League One and League Two from an external api
+- Generate Standings of the Premier League, Championship, League One and League Two from an external api.
+- Generate Fixtures of the Premier League, Championship, League One and League Two from an external api.
+- Use the generated standings and fixtures to create an api that can be use to get the standings and fixtures of the Premier League, Championship, League One and League Two using different search queries.
+- Create articles for each match fixtures, articles can be created, updated, deleted and retrieved, articles can only be created by admins.
+- Create users, users can be created, updated, deleted and retrieved, users can only be created by admins.
+- users get a token when they login, the token is use to authenticate the user when they want to create, update or delete an article.
+- users also get otp when they want to reset their password, the otp is use to authenticate the user when they want to reset their password.
 
 # Instruction
 
