@@ -22,10 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // Cookie parser
-app.use(cookieParser({
-    sameSite: 'none',
-    domain: process.env.DOMAIN
-}));
+app.use(cookieParser());
 
 // Sanitize data
 app.use(mongoSanitize());

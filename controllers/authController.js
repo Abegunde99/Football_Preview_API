@@ -214,8 +214,9 @@ const sendTokenResponse = (token, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_EXPIRE * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true,
-    
+    httpOnly: false,
+    sameSite: 'none',
+    domain: process.env.DOMAIN 
   };
 
   if (process.env.NODE_ENV === 'production') {
