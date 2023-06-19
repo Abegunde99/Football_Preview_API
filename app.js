@@ -37,7 +37,10 @@ app.use(xss());
 app.use(hpp());
 
 // Enable CORS
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL
+}));
 
 
 //routes
