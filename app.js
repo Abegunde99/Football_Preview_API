@@ -24,6 +24,8 @@ app.use(express.static('public'));
 // Cookie parser
 app.use(cookieParser({
     sameSite: 'none',
+    secure: true,
+    domain: process.env.DOMAIN
 }));
 
 // Sanitize data
