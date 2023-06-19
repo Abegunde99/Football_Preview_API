@@ -220,7 +220,7 @@ const sendTokenResponse = (token, statusCode, res) => {
   };
 
   if (process.env.NODE_ENV === 'production') {
-    options.secure = true;
+    options.secure = false;
   }
 
   res
