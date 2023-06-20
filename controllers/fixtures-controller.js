@@ -16,7 +16,6 @@ const getFixtures = asyncHandler(async (req, res, next) => {
 // @desc      Get fixtures by league
 // @route     GET /fixtures/:league
 const getFixturesByLeague = asyncHandler(async (req, res, next) => {
-    console.log(req.params.league)
     const fixtures = await fixturesService.getFixturesByLeague(req.params.league);
     res.status(200).json({ success: true, fixtures }); 
 });
