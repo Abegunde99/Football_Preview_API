@@ -25,6 +25,10 @@ const articlesSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    league: {
+        type: String,
+        required: true
+    },
     fixture: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Fixture',
