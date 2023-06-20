@@ -39,6 +39,15 @@ class fixturesService {
             throw new ErrorResponse(error.message, 500);
         }
     }
+
+    static async getFixturesById(id) { 
+        try {
+            const fixtures = await fixturesRepository.getFixturesById(id);
+            return fixtures;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    }
 }
 
 module.exports = {fixturesService};

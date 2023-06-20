@@ -2,6 +2,7 @@ const { fixturesService } = require('../services/fixtures-service');
 const asyncHandler = require('../middlewares/async');
 const { RoundsModel } = require('../models');
 const { extractNumberFromString } = require('../utils/cron');
+const { ErrorResponse } = require('../utils/errorResponse');
 
 
 // @desc      Get all fixtures
@@ -34,8 +35,16 @@ const getFixturesByGameWeek = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, fixtures });
 });
    
+//@desc     Get fixtures by id
+//@route    GET /fixtures/:id
+const getFixturesById = asyncHandler(async (req, res, next) => { 
+    const fixtures = await fixturesService.getFixturesById(req.params.id);
+    if (!fixtures) { 
+        return next(new ErrorResponse(`No fixtures found with the id of ${req.params.id}`, 404));
+    }
+    res.status(200).json({ success: true, fixtures });
+});
 
 
 
-
-module.exports = { getFixtures, getFixturesByLeague, getFixturesByGameWeek};
+module.exports = { getFixtures, getFixturesByLeague, getFixturesByGameWeek, getFixturesById};

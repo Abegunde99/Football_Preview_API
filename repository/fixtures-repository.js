@@ -38,6 +38,15 @@ const fixturesRepository = {
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
+    },
+
+    getFixturesById: async (id) => { 
+        try {
+            const fixtures = await FixturesModel.findById(id);
+            return fixtures;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
     }
 };
 
