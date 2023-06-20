@@ -13,7 +13,6 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
 // @route     GET /users/:id
 exports.getUser = asyncHandler(async (req, res, next) => {
   const user = await UserModel.findById(req.params.id);
-
   res.status(200).json({
     success: true,
     data: user

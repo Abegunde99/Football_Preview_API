@@ -17,6 +17,8 @@ const getArticles = asyncHandler(async (req, res, next) => {
 // @desc      create article
 // @route     POST /articles
 const postArticle = asyncHandler(async (req, res, next) => {
+    //acess user from req.user
+    const user = req.user;
     //post articles and also upload image to cloudinary and add fixtureid to article  
     const article = req.body;
 
@@ -30,6 +32,7 @@ const postArticle = asyncHandler(async (req, res, next) => {
 
     article.image = upload.secure_url;
     article.fixture = req.params.fixtureId;
+    article.author = `${user.firstName} ${user.lastName}`
     const newArticle = await articlesService.postArticle(article);
     res.status(200).json({ success: true, newArticle });
 });
