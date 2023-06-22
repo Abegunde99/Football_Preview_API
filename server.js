@@ -9,19 +9,28 @@ connectDB();
 
 
 // Set up the cron job to run the updateStandingsAndFixtures function every 3 hours
-cron.schedule('0 */3 * * *', async () => {
+// cron.schedule('0 */3 * * *', async () => {
+//     await updateStandingsAndFixtures();
+// });
+
+//set up setTimeout to run every 3 hours
+setTimeout(async () => {
     await updateStandingsAndFixtures();
-});
+}, 1000 * 60 * 60 * 3);
+
+
+// Set up the setTimeout to run the updateCurrentRound function once every 20 hours
+setTimeout(async () => {
+    await updateCurrentRounds();
+}, 1000 * 60 * 60 * 20);
+
 
 // Schedule the cron job to run the updateCurrentRound function once every day at a specific time
-cron.schedule('0 0 * * *', async () => {
-    await updateCurrentRounds();
-});
-
-//cron job to run a function every 5 minutes
-// cron.schedule('*/5 * * * *', async () => {
-//     console.log('running a task every 5 minutes');
+// cron.schedule('0 0 * * *', async () => {
+//     await updateCurrentRounds();
 // });
+
+
 
 const PORT = process.env.PORT || 5001;
 
