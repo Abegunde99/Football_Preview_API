@@ -31,8 +31,11 @@ const articlesSchema = new mongoose.Schema({
     },
     fixture: {
         type: String,   
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
-        
 });
 
 module.exports = mongoose.model('Articles', articlesSchema);
