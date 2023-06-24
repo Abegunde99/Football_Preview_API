@@ -1,15 +1,17 @@
-const { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture } = require('../controllers/articles-controller');
+const { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague } = require('../controllers/articles-controller');
 const router = require('express').Router();
 const multer = require('../utils/multer');
 const {protect} = require('../middlewares/auth')
 
-router.get('/', getArticles);
-router.post('/:fixtureId',protect, multer.single('image'), postArticle);
-router.get('/:id', getArticleById);
-router.put('/:id', protect, updateArticle);
-router.delete('/:id',protect, deleteArticle);
-router.get('/tag/:tag', getArticlesByTag);
-router.get('/author/:author', getArticlesByAuthor);
-router.get('/fixture/:fixtureId', getArticlesByFixture);
+router.get('/articles', getArticles);
+router.post('/articles/:fixtureId',protect, multer.single('image'), postArticle);
+router.get('/articles/:id', getArticleById);
+router.put('/articles/:id', protect, updateArticle);
+router.delete('/articles/:id',protect, deleteArticle);
+router.get('/articles/tag/:tag', getArticlesByTag);
+router.get('/articles/author/:author', getArticlesByAuthor);
+router.get('/articles/fixture/:fixtureId', getArticlesByFixture);
+router.get('/article/:league', getArticlesByLeague);
+
 
 module.exports = router;

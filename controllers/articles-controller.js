@@ -115,4 +115,16 @@ const getArticlesByFixture = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, articles });
 });
 
-module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture };
+
+//@desc    Get articles by league
+//@route   GET /articles/league
+const getArticlesByLeague = asyncHandler(async (req, res, next) => { 
+    const articles = await articlesService.getArticlesByLeague(req.params.league);
+
+    if (articles.length === 0) { 
+        return res.status(404).json({ success: false, message: 'No article found' });
+    }
+    res.status(200).json({ success: true, articles });
+});
+
+module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague };

@@ -84,7 +84,15 @@ const articlesRepository = {
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
-    }
+    },
+    getArticlesByLeague: async (league) => { 
+        try {
+            const articles = await ArticlesModel.find({ 'league': new RegExp(league, 'i') });
+            return articles;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    }  
 
 };
 

@@ -46,7 +46,7 @@ app.use(cors({
 //routes
 app.use('/standings', standingsRouter);
 app.use('/', fixturesRouter);
-app.use('/articles', articlesRouter);
+app.use('/', articlesRouter);
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
 

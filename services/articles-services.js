@@ -67,6 +67,15 @@ class articlesService {
             throw new ErrorResponse(error.message, 500);
         }
     }
+
+    static async getArticlesByLeague(leagueId) { 
+        try {
+            const articles = await articlesRepository.getArticlesByLeague(leagueId);
+            return articles;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    }
 }
 
 module.exports = {articlesService};
