@@ -4,7 +4,7 @@ const { ErrorResponse } = require('../utils/errorResponse');
 const articlesRepository = {
     getArticles: async () => {
         try {
-            const articles = await ArticlesModel.find({});
+            const articles = await ArticlesModel.find({}).sort({ createdAt: -1 });
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
