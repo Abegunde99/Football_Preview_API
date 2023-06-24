@@ -42,7 +42,8 @@ const fixturesRepository = {
 
     getFixturesById: async (id) => { 
         try {
-            const fixtures = await FixturesModel.findById(id);
+            // const fixtures = await FixturesModel.findById(id);
+            const fixtures = await FixturesModel.findOne({'fixture.id': id});
             return fixtures;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);

@@ -74,7 +74,7 @@ const articlesRepository = {
         try {
             console.log(fixturesId)
             //check if fixturesId is valid
-            const fixture = await FixturesModel.findById(fixturesId);
+            const fixture = await FixturesModel.findOne({'fixture.id': fixturesId});
             if (!fixture) {
                 throw new ErrorResponse('Invalid fixture id', 400);
             }

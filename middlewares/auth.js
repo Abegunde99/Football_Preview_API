@@ -33,6 +33,10 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
     next();
   } catch (err) {
-    return next(new ErrorResponse('Not authorized to access this route', 401));
+    if (err.name === 'TokenExpiredError') {
+      return next(new ErrorResponse('Token has expired', 401));
+    }
+
+    return next(new ErrorResponse('Invalid token', 401));
   }
 });
