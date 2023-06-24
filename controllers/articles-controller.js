@@ -5,6 +5,14 @@ const cloudinary = require('../utils/cloudinary');
 // @desc      Get all articles
 // @route     GET /articles
 const getArticles = asyncHandler(async (req, res, next) => { 
+    if (req.query) {
+        const articles = await articlesService.getArticlesByBothTeam(req.query.team1, req.query.team2);
+        if (articles.length === 0) {
+            return res.status(404).json({ success: false, message: 'No articles found' });
+        }
+        return res.status(200).json({ success: true, articles });
+
+    }
     const articles = await articlesService.getArticles();
 
     if (articles.length === 0) { 
@@ -126,5 +134,6 @@ const getArticlesByLeague = asyncHandler(async (req, res, next) => {
     }
     res.status(200).json({ success: true, articles });
 });
+
 
 module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague };

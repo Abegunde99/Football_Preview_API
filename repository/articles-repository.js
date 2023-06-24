@@ -92,7 +92,16 @@ const articlesRepository = {
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
-    }  
+    }, 
+
+   getArticlesByBothTeam: async (team1, team2) => { 
+       try {
+           const articles = await ArticlesModel.find({ $or: [{ 'tags': new RegExp(team1, 'i') }, { 'tags': new RegExp(team2, 'i') }] }).sort({createdAt: -1});
+           return articles;
+       } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+   }
 
 };
 

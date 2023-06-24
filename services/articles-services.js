@@ -76,6 +76,15 @@ class articlesService {
             throw new ErrorResponse(error.message, 500);
         }
     }
+
+    static async getArticlesByBothTeam(team1, team2) {
+        try {
+            const articles = await articlesRepository.getArticlesByBothTeam(team1, team2);
+            return articles;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    }
 }
 
 module.exports = {articlesService};
