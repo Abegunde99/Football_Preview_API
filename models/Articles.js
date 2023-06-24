@@ -30,9 +30,7 @@ const articlesSchema = new mongoose.Schema({
         required: true
     },
     fixture: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Fixture',
-        required: true
+        type: String,   
     }
         
 });
