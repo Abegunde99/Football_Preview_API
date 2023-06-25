@@ -72,7 +72,6 @@ const articlesRepository = {
     },
     getArticlesByFixture: async (fixturesId) => { 
         try {
-            console.log(fixturesId)
             //check if fixturesId is valid
             const fixture = await FixturesModel.findOne({'fixture.id': fixturesId});
             if (!fixture) {

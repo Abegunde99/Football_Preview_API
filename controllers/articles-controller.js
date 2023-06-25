@@ -25,6 +25,11 @@ const getArticles = asyncHandler(async (req, res, next) => {
 // @desc      create article
 // @route     POST /articles
 const postArticle = asyncHandler(async (req, res, next) => {
+    //check if an article has been posted for this fixture
+    const articleExists = await articlesService.getArticlesByFixture(req.params.fixtureId);
+    if (articleExists.length > 0) { 
+        return res.status(400).json({ success: false, message: 'Article already exists for this fixture' });
+    }
     //acess user from req.user
     const user = req.user;
     //post articles and also upload image to cloudinary and add fixtureid to article  
