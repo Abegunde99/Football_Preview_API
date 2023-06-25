@@ -93,9 +93,6 @@ const deleteArticle = asyncHandler(async (req, res, next) => {
 const getArticlesByTag = asyncHandler(async (req, res, next) => {
     const articles = await articlesService.getArticlesByTag(req.params.tag);
 
-    if (articles.length === 0) { 
-        return res.status(404).json({ success: false, message: 'No article found' });
-    }
     res.status(200).json({ success: true, articles }); 
 });
 
