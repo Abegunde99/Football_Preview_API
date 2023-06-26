@@ -56,7 +56,7 @@ const articlesRepository = {
     },
     getArticlesByTag: async (tag) => {
         try {
-            const articles = await ArticlesModel.find({ tags: new RegExp(tag, 'i') });
+            const articles = await ArticlesModel.find({ tags: new RegExp(tag, 'i') }).sort({ createdAt: -1 });
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -86,7 +86,7 @@ const articlesRepository = {
     },
     getArticlesByLeague: async (league) => { 
         try {
-            const articles = await ArticlesModel.find({ 'league': new RegExp(league, 'i') });
+            const articles = await ArticlesModel.find({ 'league': new RegExp(league, 'i') }).sort({ createdAt: -1 });
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -100,7 +100,16 @@ const articlesRepository = {
        } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
-   }
+   },
+
+    getArticlesByKeyword: async (keyword) => { 
+        try {
+            const articles = await ArticlesModel.find({ $or: [{ 'title': new RegExp(keyword, 'i') },{ 'body': new RegExp(keyword, 'i') }, { 'description': new RegExp(keyword, 'i') },{ 'tags': new RegExp(keyword, 'i') }] }).sort({createdAt: -1});
+            return articles;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    },
 
 };
 

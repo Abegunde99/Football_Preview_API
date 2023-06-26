@@ -96,7 +96,7 @@ const deleteArticle = asyncHandler(async (req, res, next) => {
 // @desc      Get articles by tag
 // @route     GET /articles/tag/:tag
 const getArticlesByTag = asyncHandler(async (req, res, next) => {
-    const articles = await articlesService.getArticlesByTag(req.params.tag);
+    const articles = await articlesService.getArticlesByTag(req.params.tag );
 
     res.status(200).json({ success: true, articles }); 
 });
@@ -138,4 +138,14 @@ const getArticlesByLeague = asyncHandler(async (req, res, next) => {
 });
 
 
-module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague };
+//@desc   Get articles by keyword
+//@route  GET /search/articles/:keyword
+const getArticlesByKeyword = asyncHandler(async (req, res, next) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const articles = await articlesService.getArticlesByKeyword(req.params.keyword);
+
+    res.status(200).json({ success: true, articles });
+});
+
+module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword };

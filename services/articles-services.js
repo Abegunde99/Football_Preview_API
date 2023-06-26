@@ -68,9 +68,9 @@ class articlesService {
         }
     }
 
-    static async getArticlesByLeague(leagueId) { 
+    static async getArticlesByLeague(league) { 
         try {
-            const articles = await articlesRepository.getArticlesByLeague(leagueId);
+            const articles = await articlesRepository.getArticlesByLeague(league);
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -80,6 +80,15 @@ class articlesService {
     static async getArticlesByBothTeam(team1, team2) {
         try {
             const articles = await articlesRepository.getArticlesByBothTeam(team1, team2);
+            return articles;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    }
+
+    static async getArticlesByKeyword(keyword) { 
+        try {
+            const articles = await articlesRepository.getArticlesByKeyword(keyword);
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
