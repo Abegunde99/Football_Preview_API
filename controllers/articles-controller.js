@@ -5,15 +5,17 @@ const cloudinary = require('../utils/cloudinary');
 // @desc      Get all articles
 // @route     GET /articles
 const getArticles = asyncHandler(async (req, res, next) => { 
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
     if (req.query) {
-        const articles = await articlesService.getArticlesByBothTeam(req.query.team1, req.query.team2);
+        const articles = await articlesService.getArticlesByBothTeam(req.query.team1, req.query.team2, page, limit);
         if (articles.length === 0) {
             return res.status(404).json({ success: false, message: 'No articles found' });
         }
         return res.status(200).json({ success: true, articles });
 
     }
-    const articles = await articlesService.getArticles();
+    const articles = await articlesService.getArticles(page, limit);
 
     if (articles.length === 0) { 
         return res.status(404).json({ success: false, message: 'No articles found' });
@@ -96,7 +98,9 @@ const deleteArticle = asyncHandler(async (req, res, next) => {
 // @desc      Get articles by tag
 // @route     GET /articles/tag/:tag
 const getArticlesByTag = asyncHandler(async (req, res, next) => {
-    const articles = await articlesService.getArticlesByTag(req.params.tag );
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const articles = await articlesService.getArticlesByTag(req.params.tag , page, limit);
 
     res.status(200).json({ success: true, articles }); 
 });
@@ -105,7 +109,9 @@ const getArticlesByTag = asyncHandler(async (req, res, next) => {
 // @desc      Get articles by author
 // @route     GET /articles/author/:author
 const getArticlesByAuthor = asyncHandler(async (req, res, next) => { 
-    const articles = await articlesService.getArticlesByAuthor(req.params.author);
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const articles = await articlesService.getArticlesByAuthor(req.params.author, page, limit);
 
     if (articles.length === 0) {
         return res.status(404).json({ success: false, message: 'No article found' });
@@ -129,7 +135,9 @@ const getArticlesByFixture = asyncHandler(async (req, res, next) => {
 //@desc    Get articles by league
 //@route   GET /articles/league
 const getArticlesByLeague = asyncHandler(async (req, res, next) => { 
-    const articles = await articlesService.getArticlesByLeague(req.params.league);
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const articles = await articlesService.getArticlesByLeague(req.params.league, page, limit);
 
     if (articles.length === 0) { 
         return res.status(404).json({ success: false, message: 'No article found' });
@@ -143,7 +151,7 @@ const getArticlesByLeague = asyncHandler(async (req, res, next) => {
 const getArticlesByKeyword = asyncHandler(async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const articles = await articlesService.getArticlesByKeyword(req.params.keyword);
+    const articles = await articlesService.getArticlesByKeyword(req.params.keyword, page, limit);
 
     res.status(200).json({ success: true, articles });
 });

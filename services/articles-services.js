@@ -2,10 +2,13 @@ const { articlesRepository } = require('../repository/articles-repository');
 const { ErrorResponse } = require('../utils/errorResponse');
 
 class articlesService {
-    static async getArticles() {
+    static async getArticles(page, limit) {
         try {
-            const articles = await articlesRepository.getArticles();
-            return articles;
+            const articles = await articlesRepository.getArticles(page, limit);
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            const paginatedArticles = articles.slice(startIndex, endIndex);
+            return paginatedArticles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
@@ -42,18 +45,24 @@ class articlesService {
             throw new ErrorResponse(error.message, 500);
         }
     }
-    static async getArticlesByTag(tag) {
+    static async getArticlesByTag(tag, page, limit) {
         try {
             const articles = await articlesRepository.getArticlesByTag(tag);
-            return articles;
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            const paginatedArticles = articles.slice(startIndex, endIndex);
+            return paginatedArticles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
     }
-    static async getArticlesByAuthor(author) {
+    static async getArticlesByAuthor(author, page, limit) {
         try {
             const articles = await articlesRepository.getArticlesByAuthor(author);
-            return articles;
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            const paginatedArticles = articles.slice(startIndex, endIndex);
+            return paginatedArticles;
         }catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
@@ -68,28 +77,37 @@ class articlesService {
         }
     }
 
-    static async getArticlesByLeague(league) { 
+    static async getArticlesByLeague(league, page, limit) { 
         try {
             const articles = await articlesRepository.getArticlesByLeague(league);
-            return articles;
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            const paginatedArticles = articles.slice(startIndex, endIndex);
+            return paginatedArticles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
     }
 
-    static async getArticlesByBothTeam(team1, team2) {
+    static async getArticlesByBothTeam(team1, team2, page, limit) {
         try {
             const articles = await articlesRepository.getArticlesByBothTeam(team1, team2);
-            return articles;
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            const paginatedArticles = articles.slice(startIndex, endIndex);
+            return paginatedArticles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
     }
 
-    static async getArticlesByKeyword(keyword) { 
+    static async getArticlesByKeyword(keyword, page, limit) { 
         try {
             const articles = await articlesRepository.getArticlesByKeyword(keyword);
-            return articles;
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            const paginatedArticles = articles.slice(startIndex, endIndex);
+            return paginatedArticles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
