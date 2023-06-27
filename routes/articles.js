@@ -6,7 +6,7 @@ const {protect} = require('../middlewares/auth')
 router.get('/articles', getArticles);
 router.post('/articles/:fixtureId',protect, multer.single('image'), postArticle);
 router.get('/articles/:id', getArticleById);
-router.put('/articles/:id', protect, multer.none(), updateArticle);
+router.put('/articles/:id', protect, multer.single('image'), updateArticle);
 router.delete('/articles/:id',protect, deleteArticle);
 router.get('/articles/tag/:tag', getArticlesByTag);
 router.get('/articles/author/:author', getArticlesByAuthor);

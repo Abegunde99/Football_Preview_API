@@ -20,7 +20,7 @@ const getArticles = asyncHandler(async (req, res, next) => {
     if (articles.length === 0) { 
         return res.status(404).json({ success: false, message: 'No articles found' });
     }
-    res.status(200).json({ success: true, articles });
+    res.status(200).json({ success: true, page, limit, articles });
 });
 
 
@@ -34,6 +34,7 @@ const postArticle = asyncHandler(async (req, res, next) => {
     }
     //acess user from req.user
     const user = req.user;
+    
     //post articles and also upload image to cloudinary and add fixtureid to article  
     const article = req.body;
 
@@ -76,6 +77,17 @@ const updateArticle = asyncHandler(async (req, res, next) => {
         return res.status(400).json({ success: false, message: 'Invalid article id' });
     }
 
+    //check if file is uploaded and file is different from the one in the database
+    if (req.file) {
+        const file = req.file;
+        console.log(file);
+        const upload = await cloudinary.v2.uploader.upload(file.path, { folder: 'upload' });
+        //check if file is different from the one in the database
+        if (upload.secure_url !== articleExists.image) {
+            article.image = upload.secure_url;
+        }
+    }
+    
     const newArticle = await articlesService.updateArticle(req.params.id, article);
     res.status(200).json({ success: true, newArticle }); 
 });
@@ -102,7 +114,7 @@ const getArticlesByTag = asyncHandler(async (req, res, next) => {
     const limit = parseInt(req.query.limit, 10) || 10;
     const articles = await articlesService.getArticlesByTag(req.params.tag , page, limit);
 
-    res.status(200).json({ success: true, articles }); 
+    res.status(200).json({ success: true, page, limit, articles }); 
 });
 
 
@@ -116,7 +128,7 @@ const getArticlesByAuthor = asyncHandler(async (req, res, next) => {
     if (articles.length === 0) {
         return res.status(404).json({ success: false, message: 'No article found' });
     }
-    res.status(200).json({ success: true, articles });
+    res.status(200).json({ success: true, page, limit, articles });
 });
 
 
@@ -142,7 +154,7 @@ const getArticlesByLeague = asyncHandler(async (req, res, next) => {
     if (articles.length === 0) { 
         return res.status(404).json({ success: false, message: 'No article found' });
     }
-    res.status(200).json({ success: true, articles });
+    res.status(200).json({ success: true, page, limit, articles });
 });
 
 
@@ -153,7 +165,7 @@ const getArticlesByKeyword = asyncHandler(async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 10;
     const articles = await articlesService.getArticlesByKeyword(req.params.keyword, page, limit);
 
-    res.status(200).json({ success: true, articles });
+    res.status(200).json({ success: true, page, limit, articles });
 });
 
 module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword };

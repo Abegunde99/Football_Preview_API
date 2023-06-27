@@ -17,6 +17,9 @@ const articlesSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    imageSource: {
+        type: String,
+    },
     tags: {
         type: [String],
         required: true
