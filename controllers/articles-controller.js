@@ -34,7 +34,7 @@ const postArticle = asyncHandler(async (req, res, next) => {
     }
     //acess user from req.user
     const user = req.user;
-    
+
     //post articles and also upload image to cloudinary and add fixtureid to article  
     const article = req.body;
 
@@ -80,7 +80,6 @@ const updateArticle = asyncHandler(async (req, res, next) => {
     //check if file is uploaded and file is different from the one in the database
     if (req.file) {
         const file = req.file;
-        console.log(file);
         const upload = await cloudinary.v2.uploader.upload(file.path, { folder: 'upload' });
         //check if file is different from the one in the database
         if (upload.secure_url !== articleExists.image) {
