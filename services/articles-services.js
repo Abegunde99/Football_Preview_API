@@ -112,6 +112,18 @@ class articlesService {
             throw new ErrorResponse(error.message, 500);
         }
     }
+
+    static async getArticlesByTopArticle(page, limit) { 
+        try {
+            const articles = await articlesRepository.getArticlesByTopArticle();
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            const paginatedArticles = articles.slice(startIndex, endIndex);
+            return paginatedArticles;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    }
 }
 
 module.exports = {articlesService};

@@ -167,4 +167,14 @@ const getArticlesByKeyword = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, page, limit, articles });
 });
 
-module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword };
+
+//@desc   Get top rated articles
+//@route  GET /toprated/articles
+const getTopRatedArticles = asyncHandler(async (req, res, next) => { 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const articles = await articlesService.getArticlesByTopArticle(page, limit);
+
+    res.status(200).json({ success: true, articles });
+});
+module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword, getTopRatedArticles };

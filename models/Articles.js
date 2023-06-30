@@ -35,6 +35,10 @@ const articlesSchema = new mongoose.Schema({
     fixture: {
         type: String,   
     },
+    topArticle: {
+        type: Boolean,
+        default: false
+    },
     createdAt: {
         type: Date,
         default: Date.now

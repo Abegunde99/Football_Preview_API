@@ -111,6 +111,15 @@ const articlesRepository = {
         }
     },
 
+    getArticlesByTopArticle: async () => { 
+        try {
+            const articles = await ArticlesModel.find({ 'topArticle': true }).sort({createdAt: -1});
+            return articles;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    },
+
 };
 
 module.exports = { articlesRepository };
