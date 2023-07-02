@@ -144,15 +144,14 @@ const getArticlesByAuthor = asyncHandler(async (req, res, next) => {
 // @route     GET /articles/fixture/:fixtureId
 const getArticlesByFixture = asyncHandler(async (req, res, next) => { 
     const articles = await articlesService.getArticlesByFixture(req.params.fixtureId);
-
     if (articles.length === 0) { 
         return res.status(404).json({ success: false, message: 'No article found' });
     }
 
     //check if article is saved or published
-    if (articles.status === 'draft') {
+    if (articles[0].status === 'draft') {
         return res.status(200).json({ success: true, message: 'Article is saved', articles });
-    } else if (articles.status === 'published') {
+    } else if (articles[0].status === 'published') {
         return res.status(200).json({ success: true, message: 'Article is published', articles });
     }
 });

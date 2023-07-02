@@ -50,7 +50,7 @@ app.use('/auth', authRouter);
 
 //error handler
 const { errorHandler } = require('./middlewares/error');
-app.use(errorHandler);
+// app.use(errorHandler);
 
 
 module.exports = app;

@@ -4,7 +4,7 @@ const { ErrorResponse } = require('../utils/errorResponse');
 const articlesRepository = {
     getArticles: async () => {
         try {
-            const articles = await ArticlesModel.find({'status': 'published'}).sort({ createdAt: -1 });
+            const articles = await ArticlesModel.find({'status': 'published'}).sort({ publishedAt : -1 });
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -56,7 +56,7 @@ const articlesRepository = {
     },
     getArticlesByTag: async (tag) => {
         try {
-            const articles = await ArticlesModel.find({'status': 'published', tags: new RegExp(tag, 'i') }).sort({ createdAt: -1 });
+            const articles = await ArticlesModel.find({'status': 'published', tags: new RegExp(tag, 'i') }).sort({ publishedAt: -1 });
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -86,7 +86,7 @@ const articlesRepository = {
     },
     getArticlesByLeague: async (league) => { 
         try {
-            const articles = await ArticlesModel.find({ 'status': 'published', 'league': new RegExp(league, 'i') }).sort({createdAt: -1});
+            const articles = await ArticlesModel.find({ 'status': 'published', 'league': new RegExp(league, 'i') }).sort({publishedAt: -1});
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -95,7 +95,7 @@ const articlesRepository = {
 
    getArticlesByBothTeam: async (team1, team2) => { 
         try {
-            const articles = await ArticlesModel.find({ $or: [{ 'tags': new RegExp(team1, 'i') }, { 'tags': new RegExp(team2, 'i') }], 'status': 'published' }).sort({createdAt: -1});
+            const articles = await ArticlesModel.find({ $or: [{ 'tags': new RegExp(team1, 'i') }, { 'tags': new RegExp(team2, 'i') }], 'status': 'published' }).sort({publishedAt: -1});
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -104,7 +104,7 @@ const articlesRepository = {
 
     getArticlesByKeyword: async (keyword) => { 
         try {
-            const articles = await ArticlesModel.find({ $or: [{ 'title': new RegExp(keyword, 'i') },{ 'body': new RegExp(keyword, 'i') }, { 'description': new RegExp(keyword, 'i') },{ 'tags': new RegExp(keyword, 'i') }], 'status': 'published' }).sort({createdAt: -1});
+            const articles = await ArticlesModel.find({ $or: [{ 'title': new RegExp(keyword, 'i') },{ 'body': new RegExp(keyword, 'i') }, { 'description': new RegExp(keyword, 'i') },{ 'tags': new RegExp(keyword, 'i') }], 'status': 'published' }).sort({publishedAt: -1});
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -113,7 +113,7 @@ const articlesRepository = {
 
     getArticlesByTopArticle: async () => { 
         try {
-            const articles = await ArticlesModel.find({ 'status': 'published' ,'topArticle': true }).sort({createdAt: -1});
+            const articles = await ArticlesModel.find({ 'status': 'published' ,'topArticle': true }).sort({publishedAt: -1});
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
