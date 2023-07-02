@@ -6,8 +6,9 @@ const cloudinary = require('../utils/cloudinary');
 // @route     GET /articles
 const getArticles = asyncHandler(async (req, res, next) => { 
     const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 10;
-    if (req.query) {
+    const limit = parseInt(req.query.limit, 10) || 100;
+    if (req.query.limit && req.query.page) {
+        // console.log(req.query)
         const articles = await articlesService.getArticlesByBothTeam(req.query.team1, req.query.team2, page, limit);
         if (articles.length === 0) {
             return res.status(404).json({ success: false, message: 'No articles found' });
@@ -16,7 +17,6 @@ const getArticles = asyncHandler(async (req, res, next) => {
 
     }
     const articles = await articlesService.getArticles(page, limit);
-
     if (articles.length === 0) { 
         return res.status(404).json({ success: false, message: 'No articles found' });
     }
@@ -25,7 +25,7 @@ const getArticles = asyncHandler(async (req, res, next) => {
 
 
 // @desc      create article
-// @route     POST /articles
+// @route     POST /articles?save=true
 const postArticle = asyncHandler(async (req, res, next) => {
     //check if an article has been posted for this fixture
     const articleExists = await articlesService.getArticlesByFixture(req.params.fixtureId);
@@ -49,6 +49,15 @@ const postArticle = asyncHandler(async (req, res, next) => {
     article.image = upload.secure_url;
     article.fixture = req.params.fixtureId;
     article.author = `${user.firstName} ${user.lastName}`
+
+    //check is article is being saved or posted
+    if (req.query.save) {
+        article.status = 'draft';
+    } else {
+        article.status = 'published';
+        article.publishedAt = Date.now();
+    }
+
     const newArticle = await articlesService.postArticle(article);
     res.status(200).json({ success: true, newArticle });
 });
@@ -139,7 +148,13 @@ const getArticlesByFixture = asyncHandler(async (req, res, next) => {
     if (articles.length === 0) { 
         return res.status(404).json({ success: false, message: 'No article found' });
     }
-    res.status(200).json({ success: true, articles });
+
+    //check if article is saved or published
+    if (articles.status === 'draft') {
+        return res.status(200).json({ success: true, message: 'Article is saved', articles });
+    } else if (articles.status === 'published') {
+        return res.status(200).json({ success: true, message: 'Article is published', articles });
+    }
 });
 
 
@@ -177,4 +192,21 @@ const getTopRatedArticles = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({ success: true, articles });
 });
-module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword, getTopRatedArticles };
+
+
+//@desc  publish article when article status is draft
+//@route PUT /publish/articles/:id
+const publishSavedArticle = asyncHandler(async (req, res, next) => { 
+    const article = await articlesService.getArticleById(req.params.id);
+    if (article === null) {
+        return res.status(404).json({ success: false, message: 'Article not found' });
+    }
+
+    if (article.status === 'published') {
+        return res.status(400).json({ success: false, message: 'Article is already published' });
+    }
+
+    const publishedArticle = await articlesService.publishSavedArticle(req.params.id);
+    res.status(200).json({ success: true, message: 'Article published successfully', publishedArticle });
+});
+module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword, getTopRatedArticles, publishSavedArticle };

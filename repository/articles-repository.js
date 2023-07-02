@@ -4,7 +4,7 @@ const { ErrorResponse } = require('../utils/errorResponse');
 const articlesRepository = {
     getArticles: async () => {
         try {
-            const articles = await ArticlesModel.find({}).sort({ createdAt: -1 });
+            const articles = await ArticlesModel.find({'status': 'published'}).sort({ createdAt: -1 });
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -56,7 +56,7 @@ const articlesRepository = {
     },
     getArticlesByTag: async (tag) => {
         try {
-            const articles = await ArticlesModel.find({ tags: new RegExp(tag, 'i') }).sort({ createdAt: -1 });
+            const articles = await ArticlesModel.find({'status': 'published', tags: new RegExp(tag, 'i') }).sort({ createdAt: -1 });
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -64,7 +64,7 @@ const articlesRepository = {
     },
     getArticlesByAuthor: async (author) => {
         try {
-            const articles = await ArticlesModel.find({ author: new RegExp(author, 'i') });
+            const articles = await ArticlesModel.find({ 'status': 'published', author: new RegExp(author, 'i') });
             return articles;
         }catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -86,7 +86,7 @@ const articlesRepository = {
     },
     getArticlesByLeague: async (league) => { 
         try {
-            const articles = await ArticlesModel.find({ 'league': new RegExp(league, 'i') }).sort({ createdAt: -1 });
+            const articles = await ArticlesModel.find({ 'status': 'published', 'league': new RegExp(league, 'i') }).sort({createdAt: -1});
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -94,17 +94,17 @@ const articlesRepository = {
     }, 
 
    getArticlesByBothTeam: async (team1, team2) => { 
-       try {
-           const articles = await ArticlesModel.find({ $or: [{ 'tags': new RegExp(team1, 'i') }, { 'tags': new RegExp(team2, 'i') }] }).sort({createdAt: -1});
-           return articles;
-       } catch (error) {
+        try {
+            const articles = await ArticlesModel.find({ $or: [{ 'tags': new RegExp(team1, 'i') }, { 'tags': new RegExp(team2, 'i') }], 'status': 'published' }).sort({createdAt: -1});
+            return articles;
+        } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
    },
 
     getArticlesByKeyword: async (keyword) => { 
         try {
-            const articles = await ArticlesModel.find({ $or: [{ 'title': new RegExp(keyword, 'i') },{ 'body': new RegExp(keyword, 'i') }, { 'description': new RegExp(keyword, 'i') },{ 'tags': new RegExp(keyword, 'i') }] }).sort({createdAt: -1});
+            const articles = await ArticlesModel.find({ $or: [{ 'title': new RegExp(keyword, 'i') },{ 'body': new RegExp(keyword, 'i') }, { 'description': new RegExp(keyword, 'i') },{ 'tags': new RegExp(keyword, 'i') }], 'status': 'published' }).sort({createdAt: -1});
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
@@ -113,13 +113,28 @@ const articlesRepository = {
 
     getArticlesByTopArticle: async () => { 
         try {
-            const articles = await ArticlesModel.find({ 'topArticle': true }).sort({createdAt: -1});
+            const articles = await ArticlesModel.find({ 'status': 'published' ,'topArticle': true }).sort({createdAt: -1});
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
     },
 
+    publishSavedArticle: async (id) => { 
+        try {
+            //check if article exists and status is draft
+            const articles = await ArticlesModel.findById(id);
+
+            //update article status to published    
+            articles.status = 'published';
+            articles.publishedAt = Date.now();
+
+            await articles.save();
+
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    },
 };
 
 module.exports = { articlesRepository };

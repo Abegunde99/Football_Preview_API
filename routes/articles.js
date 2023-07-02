@@ -1,4 +1,4 @@
-const { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword , getTopRatedArticles} = require('../controllers/articles-controller');
+const { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword , getTopRatedArticles, publishSavedArticle} = require('../controllers/articles-controller');
 const router = require('express').Router();
 const multer = require('../utils/multer');
 const {protect} = require('../middlewares/auth')
@@ -14,6 +14,7 @@ router.get('/articles/fixture/:fixtureId', getArticlesByFixture);
 router.get('/article/:league', getArticlesByLeague);
 router.get('/search/articles/:keyword', getArticlesByKeyword);
 router.get('/toprated/articles', getTopRatedArticles);
+router.put('/publish/articles/:id', protect, publishSavedArticle);
 
 
 

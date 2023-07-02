@@ -124,6 +124,16 @@ class articlesService {
             throw new ErrorResponse(error.message, 500);
         }
     }
+
+    static async publishSavedArticle(id) { 
+        try {
+            const articles = await articlesRepository.publishSavedArticle(id);
+            return articles;
+        } catch (error) {
+            throw new ErrorResponse(error.message, 500);
+        }
+    }
+
 }
 
 module.exports = {articlesService};

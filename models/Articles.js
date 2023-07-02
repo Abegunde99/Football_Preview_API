@@ -39,6 +39,14 @@ const articlesSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    status: {
+        type: String,
+        enum: ['draft', 'published'],
+        required: true
+    },
+    publishedAt: {
+        type: Date,
+    },
     createdAt: {
         type: Date,
         default: Date.now
