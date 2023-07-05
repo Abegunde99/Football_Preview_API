@@ -69,7 +69,7 @@ const getArticleById = asyncHandler(async (req, res, next) => {
     const article = await articlesService.getArticleById(req.params.id);
 
     if (article === null) { 
-        return res.status(404).json({ success: false, message: 'Article not found' });
+        return res.status(200).json({ success: true, message: 'Article not found' });
     }
     res.status(200).json({ success: true, article }); 
 })
@@ -145,7 +145,7 @@ const getArticlesByAuthor = asyncHandler(async (req, res, next) => {
 const getArticlesByFixture = asyncHandler(async (req, res, next) => { 
     const articles = await articlesService.getArticlesByFixture(req.params.fixtureId);
     if (articles.length === 0) { 
-        return res.status(404).json({ success: false, message: 'No article found' });
+        return res.status(200).json({ success: true, message: 'Article not found' });
     }
 
     //check if article is saved or published
@@ -165,7 +165,7 @@ const getArticlesByLeague = asyncHandler(async (req, res, next) => {
     const articles = await articlesService.getArticlesByLeague(req.params.league, page, limit);
 
     if (articles.length === 0) { 
-        return res.status(404).json({ success: false, message: 'No article found' });
+        return res.status(200).json({ success: true, message: 'Article not found' });
     }
     res.status(200).json({ success: true, page, limit, articles });
 });
