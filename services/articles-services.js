@@ -127,7 +127,7 @@ class articlesService {
 
     static async publishSavedArticle(id, article) { 
         try {
-            const articles = await articlesRepository.publishSavedArticle(id);
+            const articles = await articlesRepository.publishSavedArticle(id, article);
             return articles;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);

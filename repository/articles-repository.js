@@ -132,7 +132,7 @@ const articlesRepository = {
             await articles.save();
 
             //update the article with the new data
-            const newArticle = await ArticleModel.findByIdAndUpdate(id, article, { new: true });
+            const newArticle = await ArticlesModel.findByIdAndUpdate(id, article, { new: true });
             return newArticle;
 
         } catch (error) {

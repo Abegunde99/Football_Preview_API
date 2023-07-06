@@ -14,7 +14,7 @@ router.get('/articles/fixture/:fixtureId', getArticlesByFixture);
 router.get('/article/:league', getArticlesByLeague);
 router.get('/search/articles/:keyword', getArticlesByKeyword);
 router.get('/toprated/articles', getTopRatedArticles);
-router.put('/publish/articles/:id', protect, publishSavedArticle);
+router.put('/publish/articles/:id', protect, multer.none(), publishSavedArticle);
 
 
 
