@@ -120,7 +120,7 @@ const articlesRepository = {
         }
     },
 
-    publishSavedArticle: async (id) => { 
+    publishSavedArticle: async (id, article) => { 
         try {
             //check if article exists and status is draft
             const articles = await ArticlesModel.findById(id);
@@ -130,6 +130,10 @@ const articlesRepository = {
             articles.publishedAt = Date.now();
 
             await articles.save();
+
+            //update the article with the new data
+            const newArticle = await ArticleModel.findByIdAndUpdate(id, article, { new: true });
+            return newArticle;
 
         } catch (error) {
             throw new ErrorResponse(error.message, 500);

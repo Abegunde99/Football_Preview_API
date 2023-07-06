@@ -125,7 +125,7 @@ class articlesService {
         }
     }
 
-    static async publishSavedArticle(id) { 
+    static async publishSavedArticle(id, article) { 
         try {
             const articles = await articlesRepository.publishSavedArticle(id);
             return articles;

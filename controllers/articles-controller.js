@@ -51,7 +51,7 @@ const postArticle = asyncHandler(async (req, res, next) => {
     article.author = `${user.firstName} ${user.lastName}`
 
     //check is article is being saved or posted
-    if (req.query.save) {
+    if (req.query.save === true || req.query.save === 'true') {
         article.status = 'draft';
     } else {
         article.status = 'published';
@@ -196,16 +196,16 @@ const getTopRatedArticles = asyncHandler(async (req, res, next) => {
 //@desc  publish article when article status is draft
 //@route PUT /publish/articles/:id
 const publishSavedArticle = asyncHandler(async (req, res, next) => { 
-    const article = await articlesService.getArticleById(req.params.id);
-    if (article === null) {
+    const articles = await articlesService.getArticleById(req.params.id);
+    if (articles === null) {
         return res.status(404).json({ success: false, message: 'Article not found' });
     }
 
-    if (article.status === 'published') {
+    if (articles.status === 'published') {
         return res.status(400).json({ success: false, message: 'Article is already published' });
     }
 
-    const publishedArticle = await articlesService.publishSavedArticle(req.params.id);
+    const publishedArticle = await articlesService.publishSavedArticle(req.params.id, req.body);
     res.status(200).json({ success: true, message: 'Article published successfully', publishedArticle });
 });
 module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword, getTopRatedArticles, publishSavedArticle };
