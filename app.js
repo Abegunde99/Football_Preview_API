@@ -12,6 +12,7 @@ const fixturesRouter = require('./routes/fixtures');
 const articlesRouter = require('./routes/articles');
 const userRouter = require('./routes/user');
 const authRouter = require('./routes/auth');
+const mailchimpRouter = require('./routes/mailchimp');
 
 
 const app = express();
@@ -46,6 +47,7 @@ app.use('/', fixturesRouter);
 app.use('/', articlesRouter);
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
+app.use('/mailchimp', mailchimpRouter);
 
 
 //error handler
