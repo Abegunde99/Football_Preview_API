@@ -30,7 +30,14 @@ const postArticle = asyncHandler(async (req, res, next) => {
     //check if an article has been posted for this fixture
     const articleExists = await articlesService.getArticlesByFixture(req.params.fixtureId);
     if (articleExists.length > 0) { 
-        return res.status(400).json({ success: false, message: 'Article already exists for this fixture' });
+        //check if article is draft
+        if (articleExists[0].status === 'draft') {
+            //update article
+            const updatedArticle = await articlesService.updateArticle(articleExists[0]._id, req.body);
+            return res.status(200).json({ success: true, updatedArticle });
+        } else {
+            return res.status(400).json({ success: false, message: 'Article already exists for this fixture' });
+        }
     }
     //acess user from req.user
     const user = req.user;
