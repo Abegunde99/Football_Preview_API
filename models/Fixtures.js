@@ -104,7 +104,13 @@ const fixtureSchema = new mongoose.Schema({
     },
     gameWeek: {
         type: Number
-    }
+    },
+    competition: {
+        type: String,
+    },
+    dateAndTime: {
+        type: String,
+    },
 }, { timestamps: true });
 
 //convert time to local time before saving to db

@@ -9,6 +9,8 @@ const roundsSchema = new mongoose.Schema({
         type: String,
         required: true
     }
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('Rounds', roundsSchema);

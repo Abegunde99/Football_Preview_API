@@ -5,11 +5,12 @@ require('dotenv').config();
 
 
 const year = new Date().getFullYear();
-const month = new Date().getMonth();
+let month = new Date().getMonth();
+month += 1;
 
 let season;
 
-if (month > 7) {
+if (month > 7 || month === 7) {
     season = `${year}`
 } else {
     season = `${year - 1}`
@@ -61,31 +62,20 @@ async function fetchFixtures() {
 }
 
 // const leagueIdForV2 = [4335,4365, 4368,4369]
+//5342-championship, 5295- league 2, 5267-epl
 
-//get current round of fixtures
-// async function fetchCurrentRound(id) { 
-//     const options = {
-//         method: 'GET',
-//         url: `https://api-football-v1.p.rapidapi.com/v2/fixtures/rounds/${id}/current`,
-//         headers: {
-//           'X-RapidAPI-Key': process.env.API_KEY,
-//           'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
-//         }
-//       };
-      
-//       try {
-//           const response = await axios.request(options);
-//           return response.data.api.fixtures[0];
-//       } catch (error) {
-//           console.error(error);
-//       }
-// }
+
 
 //get current round of fixtures
 async function fetchCurrentRoundForPL() { 
     const options = {
         method: 'GET',
-        url: `https://api-football-v1.p.rapidapi.com/v2/fixtures/rounds/4335/current`,
+        url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures/rounds',
+        params: {
+          league: '39',
+          season: season,
+          current: 'true'
+        },
         headers: {
           'X-RapidAPI-Key': process.env.API_KEY,
           'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
@@ -94,7 +84,7 @@ async function fetchCurrentRoundForPL() {
       
       try {
           const response = await axios.request(options);
-          return response.data.api.fixtures[0];
+          return response.data.response[0];
       } catch (error) {
           console.error(error);
       }
@@ -102,7 +92,12 @@ async function fetchCurrentRoundForPL() {
 async function fetchCurrentRoundForChamp() { 
     const options = {
         method: 'GET',
-        url: `https://api-football-v1.p.rapidapi.com/v2/fixtures/rounds/4365/current`,
+        url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures/rounds',
+        params: {
+          league: '40',
+          season: season,
+          current: 'true'
+        },
         headers: {
           'X-RapidAPI-Key': process.env.API_KEY,
           'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
@@ -111,7 +106,7 @@ async function fetchCurrentRoundForChamp() {
       
       try {
           const response = await axios.request(options);
-          return response.data.api.fixtures[0];
+          return response.data.response[0];
       } catch (error) {
           console.error(error);
       }
@@ -119,7 +114,12 @@ async function fetchCurrentRoundForChamp() {
 async function fetchCurrentRoundForL1() { 
     const options = {
         method: 'GET',
-        url: `https://api-football-v1.p.rapidapi.com/v2/fixtures/rounds/4368/current`,
+        url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures/rounds',
+        params: {
+          league: '41',
+          season: season,
+          current: 'true'
+        },
         headers: {
           'X-RapidAPI-Key': process.env.API_KEY,
           'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
@@ -128,7 +128,7 @@ async function fetchCurrentRoundForL1() {
       
       try {
           const response = await axios.request(options);
-          return response.data.api.fixtures[0];
+          return response.data.response[0];
       } catch (error) {
           console.error(error);
       }
@@ -136,7 +136,12 @@ async function fetchCurrentRoundForL1() {
 async function fetchCurrentRoundForL2() { 
     const options = {
         method: 'GET',
-        url: `https://api-football-v1.p.rapidapi.com/v2/fixtures/rounds/4369/current`,
+        url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures/rounds',
+        params: {
+          league: '42',
+          season: season,
+          current: 'true'
+        },
         headers: {
           'X-RapidAPI-Key': process.env.API_KEY,
           'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
@@ -145,7 +150,7 @@ async function fetchCurrentRoundForL2() {
       
       try {
           const response = await axios.request(options);
-          return response.data.api.fixtures[0];
+          return response.data.response[0];
       } catch (error) {
           console.error(error);
       }
@@ -160,15 +165,15 @@ async function fetchCurrentRounds() {
     let leagueOne = await fetchCurrentRoundForL1();
     let leagueTwo = await fetchCurrentRoundForL2();
 
-    if (!championship.startsWith('Regular Season')) { 
-        championship = 'Regular Season - 46';
-    }
-    if (!leagueOne.startsWith('Regular Season')) { 
-        leagueOne = 'Regular Season - 46';
-    }
-    if (!leagueTwo.startsWith('Regular Season')) {
-        leagueTwo = 'Regular Season - 46';
-    }
+    // if (!championship.startsWith('Regular Season')) { 
+    //     championship = 'Regular Season - 46';
+    // }
+    // if (!leagueOne.startsWith('Regular Season')) { 
+    //     leagueOne = 'Regular Season - 46';
+    // }
+    // if (!leagueTwo.startsWith('Regular Season')) {
+    //     leagueTwo = 'Regular Season - 46';
+    // }
 
     currentRound = [{
             league: 'premier league',

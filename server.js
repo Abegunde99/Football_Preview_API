@@ -16,7 +16,9 @@ cron.schedule('0 */3 * * *', async () => {
 //set up setTimeout to run every 3 hours
 // setTimeout(async () => {
 //     await updateStandingsAndFixtures();
-// }, 1000 * 60 * 60 * 3);
+//     await updateCurrentRounds();
+//     console.log('done updating standings and fixtures');
+// }, 3000 );
 
 
 // Set up the setTimeout to run the updateCurrentRound function once every 20 hours

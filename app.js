@@ -52,7 +52,7 @@ app.use('/mailchimp', mailchimpRouter);
 
 //error handler
 const { errorHandler } = require('./middlewares/error');
-// app.use(errorHandler);
+app.use(errorHandler);
 
 
 module.exports = app;

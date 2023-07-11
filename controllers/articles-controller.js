@@ -117,6 +117,10 @@ const deleteArticle = asyncHandler(async (req, res, next) => {
         return res.status(400).json({ success: false, message: 'Invalid article id' });
     }
 
+    //delete image from cloudinary
+    const imageId = articleExists.image.split('/').slice(-1)[0].split('.')[0];
+    await cloudinary.v2.uploader.destroy(imageId);
+
     const article = await articlesService.deleteArticle(req.params.id);
     res.status(200).json({ success: true, message: "article deleted successfully" }); 
 });
@@ -214,5 +218,11 @@ const publishSavedArticle = asyncHandler(async (req, res, next) => {
 
     const publishedArticle = await articlesService.publishSavedArticle(req.params.id, req.body);
     res.status(200).json({ success: true, message: 'Article published successfully', publishedArticle });
+});
+
+//@desc  Create custom article
+//@route Post /custom/articles
+const createCustomArticle = asyncHandler(async (req, res, next) => { 
+    
 });
 module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword, getTopRatedArticles, publishSavedArticle };
