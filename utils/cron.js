@@ -8,7 +8,8 @@ const updateStandingsAndFixtures = async () => {
         const standings = await fetchStandings();
         const fixtures = await fetchFixtures();
         await StandingsModel.deleteMany({});
-        await FixturesModel.deleteMany({});
+        //delete all fictures that has gameWeek
+        await FixturesModel.deleteMany({ gameWeek: { $exists: true } });
 
         //add game week to fixtures
         fixtures.forEach(fixture => {

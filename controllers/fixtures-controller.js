@@ -49,7 +49,7 @@ const getFixturesById = asyncHandler(async (req, res, next) => {
 //@desc   Post fixtures
 //@route  POST /fixtures
 const postFixtures = asyncHandler(async (req, res, next) => { 
-    const { homeTeam, awayTeam, competition, dateAndTime } = req.body;
+    const { homeTeam, awayTeam, competition, dateAndTime, league } = req.body;
     const fixtureId = Math.floor(Math.random() * 1000000);
     
     //upload 2 images to cloudinary from an array of images
@@ -63,21 +63,22 @@ const postFixtures = asyncHandler(async (req, res, next) => {
     const fixtures = {
         fixture: {
             id: fixtureId,
+            date: dateAndTime,
+        },
+        league: {
+            name: league,
         },
         teams: {
             home: {
                 name: homeTeam,
-                // logo: `https://media.api-sports.io/football/teams/${homeTeam}.png`
                 logo: req.files[0].secure_url
             },
             away: {
                 name: awayTeam,
-                // logo: `https://media.api-sports.io/football/teams/${awayTeam}.png`
                 logo: req.files[1].secure_url
             }
         },
         competition: competition,
-        dateAndTime: dateAndTime
     }
     const newFixtures = await fixturesService.postFixtures(fixtures);
     res.status(201).json({ success: true, newFixtures });
