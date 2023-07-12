@@ -10,16 +10,20 @@ const cloudinary = require('../utils/cloudinary');
 // @desc      Get all fixtures
 // @route     GET /fixtures
 const getFixtures = asyncHandler(async (req, res, next) => { 
-    const fixtures = await fixturesService.getFixtures();
-    res.status(200).json({ success: true, fixtures });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const {fixtures, total} = await fixturesService.getFixtures(page, limit);
+    res.status(200).json({ success: true, pagination: {page, limit, total}, fixtures});
 });
 
 
 // @desc      Get fixtures by league
 // @route     GET /fixtures/:league
 const getFixturesByLeague = asyncHandler(async (req, res, next) => {
-    const fixtures = await fixturesService.getFixturesByLeague(req.params.league);
-    res.status(200).json({ success: true, fixtures }); 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const {fixtures, total} = await fixturesService.getFixturesByLeague(req.params.league, page, limit);
+    res.status(200).json({ success: true, pagination: {page, limit, total}, fixtures }); 
 });
 
 // @desc      Get fixtures by league and gameweek
@@ -149,8 +153,8 @@ const deleteFixtures = asyncHandler(async (req, res, next) => {
 const getFixturesByCompetition = asyncHandler(async (req, res, next) => { 
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 20;
-    const fixtures = await fixturesService.getFixturesByCompetition(req.params.competition, page, limit);
-    res.status(200).json({ success: true,page, limit, fixtures });
+    const {fixtures, total} = await fixturesService.getFixturesByCompetition(req.params.competition, page, limit);
+    res.status(200).json({ success: true, pagination: {page, limit, total}, fixtures });
 });
 
 
@@ -159,7 +163,7 @@ const getFixturesByCompetition = asyncHandler(async (req, res, next) => {
 const getHomeOutsideFixtures = asyncHandler(async (req, res, next) => { 
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 20;
-    const fixtures = await fixturesService.getHomeOutsideFixtures(page, limit);
-    res.status(200).json({ success: true, page, limit, fixtures});
+    const {fixtures, total} = await fixturesService.getHomeOutsideFixtures(page, limit);
+    res.status(200).json({ success: true, pagination: {page, limit, total}, fixtures});
 });
 module.exports = { getFixtures, getFixturesByLeague, getFixturesByGameWeek, getFixturesById, postFixtures, updateFixtures, deleteFixtures, getFixturesByCompetition, getHomeOutsideFixtures};

@@ -3,20 +3,28 @@ const { ErrorResponse } = require('../utils/errorResponse');
 
 class fixturesService {
     
-    static async getFixtures() {
+    static async getFixtures(page, limit) {
         try {
-            const fixtures = await fixturesRepository.getFixtures();
-            return fixtures;
+            const fixture = await fixturesRepository.getFixtures();
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            const fixtures = fixture.slice(startIndex, endIndex);
+            const total = fixture.length;
+            return {fixtures, total};
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
     }
 
 
-    static async getFixturesByLeague(league) {
+    static async getFixturesByLeague(league, page, limit) {
         try {
-            const fixtures = await fixturesRepository.getFixturesByLeague(league);
-            return fixtures;
+            const fixture = await fixturesRepository.getFixturesByLeague(league);
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit;
+            const fixtures = fixture.slice(startIndex, endIndex);
+            const total = fixture.length;
+            return {fixtures, total};
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
@@ -87,11 +95,12 @@ class fixturesService {
 
     static async getFixturesByCompetition(competition, page, limit) { 
         try {
-            const fixtures = await fixturesRepository.getFixturesByCompetition(competition, );
+            const fixture = await fixturesRepository.getFixturesByCompetition(competition );
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
-            const paginatedFixtures = fixtures.slice(startIndex, endIndex);
-            return paginatedFixtures;
+            const fixtures = fixture.slice(startIndex, endIndex);
+            const total = fixture.length;
+            return {fixtures, total};
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
@@ -99,11 +108,12 @@ class fixturesService {
 
     static async getHomeOutsideFixtures(page, limit) {
         try {
-            const fixtures = await fixturesRepository.getHomeOutsideFixtures();
+            const fixture = await fixturesRepository.getHomeOutsideFixtures();
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
-            const paginatedFixtures = fixtures.slice(startIndex, endIndex);
-            return paginatedFixtures;
+            const fixtures = fixture.slice(startIndex, endIndex);
+            const total = fixture.length;
+            return {fixtures, total};
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }

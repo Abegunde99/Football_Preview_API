@@ -16,11 +16,11 @@ const getArticles = asyncHandler(async (req, res, next) => {
         return res.status(200).json({ success: true, articles });
 
     }
-    const articles = await articlesService.getArticles(page, limit);
+    const {articles, total} = await articlesService.getArticles(page, limit);
     if (articles.length === 0) { 
         return res.status(404).json({ success: false, message: 'No articles found' });
     }
-    res.status(200).json({ success: true, page, limit, articles });
+    res.status(200).json({ success: true, pagination: { page, limit, total }, articles });
 });
 
 
@@ -131,9 +131,9 @@ const deleteArticle = asyncHandler(async (req, res, next) => {
 const getArticlesByTag = asyncHandler(async (req, res, next) => {
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 10;
-    const articles = await articlesService.getArticlesByTag(req.params.tag , page, limit);
+    const {articles, total} = await articlesService.getArticlesByTag(req.params.tag , page, limit);
 
-    res.status(200).json({ success: true, page, limit, articles }); 
+    res.status(200).json({ success: true, pagination: { page, limit, total }, articles }); 
 });
 
 
@@ -142,12 +142,12 @@ const getArticlesByTag = asyncHandler(async (req, res, next) => {
 const getArticlesByAuthor = asyncHandler(async (req, res, next) => { 
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 10;
-    const articles = await articlesService.getArticlesByAuthor(req.params.author, page, limit);
+    const {articles, total } = await articlesService.getArticlesByAuthor(req.params.author, page, limit);
 
     if (articles.length === 0) {
         return res.status(404).json({ success: false, message: 'No article found' });
     }
-    res.status(200).json({ success: true, page, limit, articles });
+    res.status(200).json({ success: true, pagination: { page, limit, total }, articles });
 });
 
 
@@ -173,12 +173,12 @@ const getArticlesByFixture = asyncHandler(async (req, res, next) => {
 const getArticlesByLeague = asyncHandler(async (req, res, next) => { 
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 10;
-    const articles = await articlesService.getArticlesByLeague(req.params.league, page, limit);
+    const {articles, total} = await articlesService.getArticlesByLeague(req.params.league, page, limit);
 
     if (articles.length === 0) { 
         return res.status(200).json({ success: true, message: 'Article not found' });
     }
-    res.status(200).json({ success: true, page, limit, articles });
+    res.status(200).json({ success: true, pagination: { page, limit, total }, articles });
 });
 
 
@@ -187,9 +187,9 @@ const getArticlesByLeague = asyncHandler(async (req, res, next) => {
 const getArticlesByKeyword = asyncHandler(async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const articles = await articlesService.getArticlesByKeyword(req.params.keyword, page, limit);
+    const {articles, total} = await articlesService.getArticlesByKeyword(req.params.keyword, page, limit);
 
-    res.status(200).json({ success: true, page, limit, articles });
+    res.status(200).json({ success: true, pagination: { page, limit, total }, articles });
 });
 
 
@@ -198,9 +198,9 @@ const getArticlesByKeyword = asyncHandler(async (req, res, next) => {
 const getTopRatedArticles = asyncHandler(async (req, res, next) => { 
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const articles = await articlesService.getArticlesByTopArticle(page, limit);
+    const {articles, total} = await articlesService.getArticlesByTopArticle(page, limit);
 
-    res.status(200).json({ success: true, articles });
+    res.status(200).json({ success: true, pagination: { page, limit, total }, articles });
 });
 
 
@@ -220,9 +220,5 @@ const publishSavedArticle = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, message: 'Article published successfully', publishedArticle });
 });
 
-//@desc  Create custom article
-//@route Post /custom/articles
-const createCustomArticle = asyncHandler(async (req, res, next) => { 
-    
-});
+
 module.exports = { getArticles, postArticle, getArticleById, updateArticle, deleteArticle, getArticlesByTag, getArticlesByAuthor, getArticlesByFixture, getArticlesByLeague, getArticlesByKeyword, getTopRatedArticles, publishSavedArticle };

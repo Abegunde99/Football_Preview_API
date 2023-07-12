@@ -47,22 +47,24 @@ class articlesService {
     }
     static async getArticlesByTag(tag, page, limit) {
         try {
-            const articles = await articlesRepository.getArticlesByTag(tag);
+            const article = await articlesRepository.getArticlesByTag(tag);
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
-            const paginatedArticles = articles.slice(startIndex, endIndex);
-            return paginatedArticles;
+            const articles = article.slice(startIndex, endIndex);
+            const total = article.length;
+            return {articles, total};
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
     }
     static async getArticlesByAuthor(author, page, limit) {
         try {
-            const articles = await articlesRepository.getArticlesByAuthor(author);
+            const article = await articlesRepository.getArticlesByAuthor(author);
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
-            const paginatedArticles = articles.slice(startIndex, endIndex);
-            return paginatedArticles;
+            const articles = article.slice(startIndex, endIndex);
+            const total = article.length;
+            return {articles, total};
         }catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
@@ -79,11 +81,12 @@ class articlesService {
 
     static async getArticlesByLeague(league, page, limit) { 
         try {
-            const articles = await articlesRepository.getArticlesByLeague(league);
+            const article = await articlesRepository.getArticlesByLeague(league);
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
-            const paginatedArticles = articles.slice(startIndex, endIndex);
-            return paginatedArticles;
+            const articles = article.slice(startIndex, endIndex);
+            const total = article.length;
+            return {articles, total};
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
@@ -91,11 +94,12 @@ class articlesService {
 
     static async getArticlesByBothTeam(team1, team2, page, limit) {
         try {
-            const articles = await articlesRepository.getArticlesByBothTeam(team1, team2);
+            const article = await articlesRepository.getArticlesByBothTeam(team1, team2);
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
-            const paginatedArticles = articles.slice(startIndex, endIndex);
-            return paginatedArticles;
+            const articles = article.slice(startIndex, endIndex);
+            const total = article.length;
+            return {articles, total};
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
@@ -103,11 +107,12 @@ class articlesService {
 
     static async getArticlesByKeyword(keyword, page, limit) { 
         try {
-            const articles = await articlesRepository.getArticlesByKeyword(keyword);
+            const article = await articlesRepository.getArticlesByKeyword(keyword);
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
-            const paginatedArticles = articles.slice(startIndex, endIndex);
-            return paginatedArticles;
+            const articles = article.slice(startIndex, endIndex);
+            const total = article.length;
+            return {articles, total};
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
@@ -115,11 +120,12 @@ class articlesService {
 
     static async getArticlesByTopArticle(page, limit) { 
         try {
-            const articles = await articlesRepository.getArticlesByTopArticle();
+            const article = await articlesRepository.getArticlesByTopArticle();
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
-            const paginatedArticles = articles.slice(startIndex, endIndex);
-            return paginatedArticles;
+            const articles = article.slice(startIndex, endIndex);
+            const total = article.length;
+            return {articles, total};
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }
