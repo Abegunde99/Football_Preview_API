@@ -4,11 +4,12 @@ const { ErrorResponse } = require('../utils/errorResponse');
 class articlesService {
     static async getArticles(page, limit) {
         try {
-            const articles = await articlesRepository.getArticles(page, limit);
+            const article = await articlesRepository.getArticles(page, limit);
             const startIndex = (page - 1) * limit;
             const endIndex = page * limit;
-            const paginatedArticles = articles.slice(startIndex, endIndex);
-            return paginatedArticles;
+            const articles = article.slice(startIndex, endIndex);
+            const total = article.length;
+            return {articles, total};
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
         }

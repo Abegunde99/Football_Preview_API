@@ -16,7 +16,7 @@ const getArticles = asyncHandler(async (req, res, next) => {
         return res.status(200).json({ success: true, articles });
 
     }
-    const {articles, total} = await articlesService.getArticles(page, limit);
+    const { articles, total } = await articlesService.getArticles(page, limit);
     if (articles.length === 0) { 
         return res.status(404).json({ success: false, message: 'No articles found' });
     }
