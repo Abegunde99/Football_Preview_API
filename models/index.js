@@ -4,5 +4,4 @@ module.exports = {
     ArticlesModel: require('./Articles'),
     UserModel: require('./User'),
     RoundsModel: require('./Rounds'),
-    CustomFixturesModel: require('./custom-fixtures'),
 }
