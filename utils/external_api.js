@@ -165,15 +165,15 @@ async function fetchCurrentRounds() {
     let leagueOne = await fetchCurrentRoundForL1();
     let leagueTwo = await fetchCurrentRoundForL2();
 
-    // if (!championship.startsWith('Regular Season')) { 
-    //     championship = 'Regular Season - 46';
-    // }
-    // if (!leagueOne.startsWith('Regular Season')) { 
-    //     leagueOne = 'Regular Season - 46';
-    // }
-    // if (!leagueTwo.startsWith('Regular Season')) {
-    //     leagueTwo = 'Regular Season - 46';
-    // }
+    if (!championship.startsWith('Regular Season')) { 
+        championship = 'Regular Season - 46';
+    }
+    if (!leagueOne.startsWith('Regular Season')) { 
+        leagueOne = 'Regular Season - 46';
+    }
+    if (!leagueTwo.startsWith('Regular Season')) {
+        leagueTwo = 'Regular Season - 46';
+    }
 
     currentRound = [{
             league: 'premier league',
