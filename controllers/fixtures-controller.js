@@ -57,11 +57,16 @@ const postFixtures = asyncHandler(async (req, res, next) => {
     const fixtureId = Math.floor(Math.random() * 1000000);
     
     //upload 2 images to cloudinary from an array of images
-    for (let i = 0; i < req.files.length; i++) {
-        const { path } = req.files[i];
-        const logo = await cloudinary.uploader.upload(path, { folder: 'upload' });
-        req.files[i].secure_url = logo.secure_url;
-    }
+    // for (let i = 0; i < req.files.length; i++) {
+    //     const { path } = req.files[i];
+    //     const logo = await cloudinary.uploader.upload(path, { folder: 'upload' });
+    //     req.files[i].secure_url = logo.secure_url;
+    // }
+    const homeLogoFile = req.files['homeLogo'][0]; // Assuming the field name is 'homeLogo' in the request
+    const awayLogoFile = req.files['awayLogo'][0];
+    console.log(homeLogoFile)
+    const homeLogo = await cloudinary.uploader.upload(homeLogoFile.path, { folder: 'upload' });
+    const awayLogo = await cloudinary.uploader.upload(awayLogoFile.path, { folder: 'upload' });
 
     
     const fixtures = {
@@ -75,11 +80,11 @@ const postFixtures = asyncHandler(async (req, res, next) => {
         teams: {
             home: {
                 name: homeTeam,
-                logo: req.files[0].secure_url
+                logo: homeLogo.secure_url
             },
             away: {
                 name: awayTeam,
-                logo: req.files[1].secure_url
+                logo: awayLogo.secure_url
             }
         },
         competition: competition,
@@ -97,26 +102,38 @@ const updateFixtures = asyncHandler(async (req, res, next) => {
     if (!fixtureExists) {
         return next(new ErrorResponse(`No fixture with the id of ${req.params.id}`, 404));
     }
-    //check if image is uploaded
-    if (req.files) {
-        
-        //upload 2 images to cloudinary from an array of images
-        for (let i = 0; i < req.files.length; i++) {
-            const { path } = req.files[i];
-            const logo = await cloudinary.uploader.upload(path, { folder: 'upload' });
-            req.files[i].secure_url = logo.secure_url;
-        }
+
+    const homeLogoFile = req.files['homeLogo'] ? req.files['homeLogo'][0] : null;
+    const awayLogoFile = req.files['awayLogo'] ? req.files['awayLogo'][0] : null;
+
+    let awaylogo = {};
+    let homelogo = {}
+    
+    if (homeLogoFile) {
+        const homeLogo = await cloudinary.uploader.upload(homeLogoFile.path, { folder: 'upload' });
+        homelogo.secure_url = homeLogo.secure_url;
+    } else {
+        homelogo.secure_url = req.body.homeLogo || fixtureExists.teams.home.logo;
     }
+
+   
+    if (awayLogoFile) { 
+        const awayLogo = await cloudinary.uploader.upload(awayLogoFile.path, { folder: 'upload' });
+        awaylogo.secure_url = awayLogo.secure_url;
+    } else {
+        awaylogo.secure_url = req.body.awayLogo || fixtureExists.teams.away.logo;
+    }
+   
 
     const fixture = {
         teams: {
             home: {
                 name: req.body.homeTeam,
-                logo: req.files[0].secure_url
+                logo: homelogo.secure_url
             },
             away: {
                 name: req.body.awayTeam,
-                logo: req.files[1].secure_url
+                logo: awaylogo.secure_url
             }
         },
         fixture: {
