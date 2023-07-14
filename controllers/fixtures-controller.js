@@ -99,6 +99,7 @@ const updateFixtures = asyncHandler(async (req, res, next) => {
     }
     //check if image is uploaded
     if (req.files) {
+        
         //upload 2 images to cloudinary from an array of images
         for (let i = 0; i < req.files.length; i++) {
             const { path } = req.files[i];
@@ -118,8 +119,12 @@ const updateFixtures = asyncHandler(async (req, res, next) => {
                 logo: req.files[1].secure_url
             }
         },
-        competition: req.body.competition,
-        dateAndTime: req.body.dateAndTime
+        fixture: {
+            date: req.body.dateAndTime,
+        },
+        league: {
+            name: req.body.league,
+        },
     };
 
     const fixtures = await fixturesService.updateFixtures(req.params.id, fixture);
