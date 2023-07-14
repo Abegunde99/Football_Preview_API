@@ -56,15 +56,8 @@ const postFixtures = asyncHandler(async (req, res, next) => {
     const { homeTeam, awayTeam, competition, dateAndTime, league } = req.body;
     const fixtureId = Math.floor(Math.random() * 1000000);
     
-    //upload 2 images to cloudinary from an array of images
-    // for (let i = 0; i < req.files.length; i++) {
-    //     const { path } = req.files[i];
-    //     const logo = await cloudinary.uploader.upload(path, { folder: 'upload' });
-    //     req.files[i].secure_url = logo.secure_url;
-    // }
-    const homeLogoFile = req.files['homeLogo'][0]; // Assuming the field name is 'homeLogo' in the request
+    const homeLogoFile = req.files['homeLogo'][0]; 
     const awayLogoFile = req.files['awayLogo'][0];
-    console.log(homeLogoFile)
     const homeLogo = await cloudinary.uploader.upload(homeLogoFile.path, { folder: 'upload' });
     const awayLogo = await cloudinary.uploader.upload(awayLogoFile.path, { folder: 'upload' });
 
