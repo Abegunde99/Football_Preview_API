@@ -120,6 +120,7 @@ const updateFixtures = asyncHandler(async (req, res, next) => {
             }
         },
         fixture: {
+            id: req.body.id || fixtureExists.fixture.id,
             date: req.body.dateAndTime,
         },
         league: {
