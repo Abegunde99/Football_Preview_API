@@ -6,20 +6,15 @@ const cloudinary = require('../utils/cloudinary');
 // @route     GET /articles
 const getArticles = asyncHandler(async (req, res, next) => { 
     const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 100;
-    if (req.query.limit && req.query.page) {
-        // console.log(req.query)
-        const articles = await articlesService.getArticlesByBothTeam(req.query.team1, req.query.team2, page, limit);
-        if (articles.length === 0) {
-            return res.status(404).json({ success: false, message: 'No articles found' });
-        }
-        return res.status(200).json({ success: true, articles });
+    const limit = parseInt(req.query.limit, 10) || 20;
+    if (req.query.team1 && req.query.team2) {
+        const {articles, total} = await articlesService.getArticlesByBothTeam(req.query.team1, req.query.team2, page, limit);
+        
+        return res.status(200).json({ success: true, pagination: { page, limit, total }, articles });
 
     }
     const { articles, total } = await articlesService.getArticles(page, limit);
-    if (articles.length === 0) { 
-        return res.status(404).json({ success: false, message: 'No articles found' });
-    }
+    
     res.status(200).json({ success: true, pagination: { page, limit, total }, articles });
 });
 
@@ -151,12 +146,17 @@ const getArticlesByAuthor = asyncHandler(async (req, res, next) => {
 });
 
 
-// @desc      Get articles by fixture
+// @desc      Get articles by fixture and increase views if user is not logged in
 // @route     GET /articles/fixture/:fixtureId
 const getArticlesByFixture = asyncHandler(async (req, res, next) => { 
     const articles = await articlesService.getArticlesByFixture(req.params.fixtureId);
     if (articles.length === 0) { 
         return res.status(200).json({ success: true, message: 'Article not found' });
+    }
+    if (!req.user) { 
+        //increase views
+        articles[0].views += 1;
+        await articles[0].save();
     }
 
     //check if article is saved or published
