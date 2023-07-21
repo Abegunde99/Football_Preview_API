@@ -47,7 +47,7 @@ app.use('/', fixturesRouter);
 app.use('/', articlesRouter);
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
-app.use('/mailchimp', mailchimpRouter);
+app.use('/', mailchimpRouter);
 
 
 //error handler

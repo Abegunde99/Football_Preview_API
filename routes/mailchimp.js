@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('../utils/multer')
+const {protect} = require('../middlewares/auth')
 
-const {subscribeToMailchimp} = require('../controllers/mailchimp');
+const {subscribeToMailchimp, uploadImage} = require('../controllers/mailchimp');
 
-router.post('/subscribe', async (req, res) => { 
+router.post('/mailchimp/subscribe', async (req, res) => { 
     const {email} = req.body
     const {result, error} = await subscribeToMailchimp(email)
     if (result) {
@@ -13,5 +15,6 @@ router.post('/subscribe', async (req, res) => {
     }
 });
 
+router.post('/upload',protect, multer.single('image'),uploadImage);
 
 module.exports = router;
