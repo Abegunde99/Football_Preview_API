@@ -52,11 +52,11 @@ const fixturesRepository = {
 
     getFixturesByLeague: async (league) => {
         try {
-            if (league === 'Friendlies' || league === 'European Matches' || league === 'friendlies' || league === 'european matches') {
+           // if (league === 'Friendlies' || league === 'European Matches' || league === 'friendlies' || league === 'european matches') {
                 //return fixtures which fixture.date + 2 hours is less than current date
-                const fixtures = await FixturesModel.find({ 'league.name': new RegExp(league, 'i'), 'fixture.date': { $gt: new Date(Date.now() + 2 * 60 * 60 * 1000) } });
-                return fixtures;
-            } 
+                //const fixtures = await FixturesModel.find({ 'league.name': new RegExp(league, 'i'), 'fixture.date': { $gt: new Date(Date.now() + 2 * 60 * 60 * 1000) } });
+               // return fixtures;
+           // } 
             const fixtures = await FixturesModel.find({ 'league.name': new RegExp(league, 'i') });
             return fixtures;
         } catch (error) {
