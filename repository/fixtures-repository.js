@@ -54,7 +54,7 @@ const fixturesRepository = {
         try {
            if (league === 'Friendlies' || league === 'European Matches' || league === 'friendlies' || league === 'european matches') {
                 // return fixtures which fixture.date + 2 hours is less than current date
-               const fixturess = await FixturesModel.find({ 'league.name': new RegExp(league, 'i') });
+               const fixturess = await FixturesModel.find({ 'league.name': new RegExp(league, 'i') }).sort({createdAt: -1});
                const fixtures = fixturess.filter(fixture => { 
                      const date = new Date(fixture.fixture.date);
                      const datePlusTwoHours = new Date(date.setHours(date.getHours() + 2));
