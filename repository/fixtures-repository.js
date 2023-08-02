@@ -31,7 +31,7 @@ const fixturesRepository = {
             //check if the fixture exists
             const fixture = await FixturesModel.findById(id);
             if (!fixture) {
-                throw new ErrorResponse(`Fixture with id ${id} not found`, 404);
+                throw new ErrorResponse(`Fixture with id ${id} does not exist`, 404);
             }
             await FixturesModel.findByIdAndDelete(id);
             return;
