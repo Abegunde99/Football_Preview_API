@@ -71,7 +71,8 @@ const fixturesRepository = {
 
     getFixturesByGameWeek: async (league, gameWeek) => { 
         try {
-            const fixtures = await FixturesModel.find({ 'league.name': new RegExp(league, 'i'), 'gameWeek': gameWeek });
+            //sort by date
+            const fixtures = await FixturesModel.find({ 'league.name': new RegExp(league, 'i'), 'gameWeek': gameWeek }).sort({"fixture.date": 1});
             return fixtures;
         } catch (error) {
             throw new ErrorResponse(error.message, 500);
