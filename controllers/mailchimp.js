@@ -32,13 +32,13 @@ exports.subscribeToMailchimp = async (email) => {
     return { result, error }
 };
 
-exports.uploadImage = asyncHandler(async (req, res, next) => { 
+exports.uploadImage = asyncHandler(async (req, res, next) => {
   const file = req.file;
-  if (!file) { 
+  if (!file) {
     return next(new ErrorResponse('Please upload an image', 400));
   }
   const uploadResponse = await cloudinary.uploader.upload(file.path, {
     upload_preset: 'article_images',
   });
-  res.status(200).json({ success: true, image_url: uploadResponse.secure_url});
+  res.status(200).json({ success: true, image_url: uploadResponse.secure_url });
 });
