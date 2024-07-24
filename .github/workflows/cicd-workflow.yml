@@ -12,9 +12,9 @@ jobs:
       - name: checkout source
         uses: actions/checkout@v4
       - name: create environment file
-        run: echo "MONGO_PASSWORD=${{secret.MONGO_PASSWORD}}" >> .env      
+        run: echo "MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}}" >> .env      
       - name: Login into docker hub
-        run: docker login -u ${{secret.DOCKER_USERNAME}} -p ${{secret.DOCKER_PASSWORD}}
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
       - name: Build docker image
         run: docker build -t abegunde99/football_previews .
       - name: push docker image to dockerhub
