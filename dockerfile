@@ -1,7 +1,7 @@
 FROM node:latest
 
 #set the working directory
-WORKDIR /
+WORKDIR /app
 
 #Copy package.json and package-lock.json
 COPY package*.json ./
@@ -16,7 +16,7 @@ COPY . .
 COPY .env ./
 
 # Expose the port
-EXPOSE 80
+EXPOSE 5000
 
 # Start the application
 CMD ["npm", "start"]

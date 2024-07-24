@@ -42,6 +42,12 @@ app.use(cors());
 
 
 //routes
+app.get('/', (req, res) =>{
+    res.status(200).json({
+        message: "Welcome to my Football_previews API"
+    })
+})
+
 app.use('/standings', standingsRouter);
 app.use('/', fixturesRouter);
 app.use('/', articlesRouter);
