@@ -9,8 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        name: Checkout source
       - name: Create .env file
         run: echo "MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}" >> .env
       - name: Login to docker hub
