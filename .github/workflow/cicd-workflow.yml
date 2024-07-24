@@ -1,0 +1,35 @@
+name: Deploy Football_previews app
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v4
+      - name: create environment file
+        run: echo "MONGO_PASSWORD=${{secret.MONGO_PASSWORD}}" >> .env      
+      - name: Login into docker hub
+        run: docker login -u ${{secret.DOCKER_USERNAME}} -p ${{secret.DOCKER_PASSWORD}}
+      - name: Build docker image
+        run: docker build -t abegunde99/football_previews .
+      - name: push docker image to dockerhub
+        run: docker push abegunde99/football_previews:latest
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Pull docker image from docker hub
+        run: docker pull abegunde99/football_previews:latest
+      - name: Delete docker container
+        run: docker rm -f football_previews-container
+      - name: Run docker container
+        run: docker run -d -p 5000:5000 --name football_previews-container abegunde99/football_previews
+
+      
+      
