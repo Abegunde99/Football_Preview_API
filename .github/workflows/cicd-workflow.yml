@@ -27,9 +27,9 @@ jobs:
       - name: Pull docker image from docker hub
         run: docker pull abegunde99/football_previews:latest
       - name: Delete docker container
-        run: docker rm -f football_previews-container
+        run: docker rm -f football_preview-container
       - name: Run docker container
-        run: docker run -d -p 5000:5000 --name football_previews-container abegunde99/football_previews
+        run: docker run -d -p 5000:5000 --name football_preview-container abegunde99/football_previews
 
       
       
